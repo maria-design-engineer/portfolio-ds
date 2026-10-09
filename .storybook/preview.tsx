@@ -8,7 +8,7 @@ const preview: Preview = {
     // Порядок меню: токены, затем три группы компонентов — как страницы кита и очереди сборки.
     options: {
       storySort: {
-        order: ['Токены', ['Переменные', 'Стили', 'Иконки'], 'Base UI', 'Components', 'Product components'],
+        order: ['Обзор', ['Desktop', 'Mobile'], 'Токены', ['Переменные', 'Стили', 'Иконки'], 'Base UI', 'Components', 'Product components'],
       },
     },
     controls: {

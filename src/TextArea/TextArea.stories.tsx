@@ -28,7 +28,7 @@ const states: Record<string, Partial<TextAreaProps>> = {
 
 const caption: CSSProperties = { marginBottom: 8, color: 'var(--ds-color-fg-secondary)' }
 const column: CSSProperties = { display: 'flex', flexDirection: 'column', gap: 24, width: 340 }
-const grid: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(4, 340px)', gap: '32px 40px', alignItems: 'start' }
+const grid: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 340px))', gap: '32px 40px', alignItems: 'start' }
 
 function Card({ name, children }: { name: string; children: ReactNode }) {
   return (

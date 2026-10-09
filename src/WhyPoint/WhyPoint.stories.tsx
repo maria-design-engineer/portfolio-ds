@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState, type CSSProperties, type ReactNode } from 'react'
 
+import { nbsp } from '../showcase/text.stories.helpers'
 import { WhyPoint, type WhyPointProps, type WhyPointView } from './WhyPoint'
 
 const meta = {
@@ -14,7 +15,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 // Текст и ширины — как у мастеров набора в UI-kit.
-const TEXT = '…чтобы гипотезы не состарились в бэклоге'
+const TEXT = nbsp('…чтобы гипотезы не состарились в бэклоге')
 const WIDTH: Record<WhyPointView, number> = { list: 431, tab: 292 }
 
 // Пять мастеров набора: у плашки `view=tab` состояния hover нет.
@@ -104,7 +105,7 @@ export const States: Story = {
 
 // Живое переключение: пункты нажимаются мышью и клавиатурой, как в блоке «Зачем».
 // Тексты-заглушки: настоящие тексты пунктов живут на макете, в витрину не переписываются.
-const points = ['Пункт первый — текст в две строки, как у мастера в ките', 'Пункт второй', 'Пункт третий']
+const points = ['Пункт первый — текст в две строки, как у мастера в ките', 'Пункт второй', 'Пункт третий'].map(nbsp)
 
 function Switcher({ view }: { view: WhyPointView }) {
   const [current, setCurrent] = useState(0)

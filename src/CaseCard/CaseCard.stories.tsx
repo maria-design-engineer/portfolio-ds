@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import type { CSSProperties, ReactNode } from 'react'
 
+import { nbsp } from '../showcase/text.stories.helpers'
 import { CaseCard, type CaseCardDevice, type CaseCardProps, type CaseCardTag } from './CaseCard'
 
 const meta = {
@@ -15,9 +16,10 @@ export default meta
 type Story = StoryObj
 
 // Тексты, теги и ширины — как у мастеров набора в UI-kit.
-const TITLE = 'Умное планирование и опора на данные'
-const TEASER =
-  'Приложение под один вид спорта и одну задачу тренера. Планировать и собирать факт. Анализ и дизайн сделаны, сейчас уточняю методику с тренерами. Код дальше тоже мой'
+const TITLE = nbsp('Умное планирование и опора на данные')
+const TEASER = nbsp(
+  'Приложение под один вид спорта и одну задачу тренера. Планировать и собирать факт. Анализ и дизайн сделаны, сейчас уточняю методику с тренерами. Код дальше тоже мой',
+)
 const WIDTH: Record<CaseCardDevice, number> = { desktop: 676, mobile: 330 }
 const TAGS: CaseCardTag[] = [
   { label: 'UX/UI', color: 'blue', icon: 'design-ideas-regular' },
