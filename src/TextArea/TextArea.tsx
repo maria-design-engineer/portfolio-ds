@@ -1,8 +1,8 @@
 import { Field } from '@base-ui/react/field'
-import { useRef, type ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { Icon, type IconSize } from '../icons/Icon'
-import { clearControl, FIELD_TEXT } from '../TextInput/TextInput'
+import { clearControl, FIELD_TEXT, useSharedRef } from '../TextInput/TextInput'
 
 export type TextAreaSize = 's' | 'm' | 'l' | 'xl'
 
@@ -40,9 +40,10 @@ export function TextArea({
   disabled = false,
   className,
   'data-ds-state': dsState,
+  ref,
   ...textarea
 }: TextAreaProps) {
-  const control = useRef<HTMLTextAreaElement>(null)
+  const [control, setControl] = useSharedRef<HTMLTextAreaElement>(ref)
   const icon = ICON_SIZE[size]
   const text = FIELD_TEXT[size]
   const showClear = clearable && !disabled
@@ -59,7 +60,7 @@ export function TextArea({
       disabled={disabled}
     >
       <div className={`ds-field__box ds-text-${text}`} onClick={(event) => !(event.target as Element).closest('button') && control.current?.focus()}>
-        <Field.Control className="ds-field__control" render={<textarea {...textarea} ref={control} />} />
+        <Field.Control className="ds-field__control" render={<textarea {...textarea} ref={setControl} />} />
         {showClear || showErrorIcon ? (
           <span className="ds-field__right">
             {showClear ? (

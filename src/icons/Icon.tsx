@@ -1,4 +1,5 @@
 // Иконки библиотеки. Контуры — пакет @fluentui/svg-icons: в собранный пакет попадают только названные здесь.
+// Лицензия набора — MIT, текст лежит в public/licenses/ и едет в пакет и в витрину.
 // Наружу компонент не выходит: иконки живут внутри полей и кнопки, имя набора в сайт не едет.
 import chevronDown12 from '@fluentui/svg-icons/icons/chevron_down_12_filled.svg?raw'
 import chevronDown16 from '@fluentui/svg-icons/icons/chevron_down_16_filled.svg?raw'

@@ -1,5 +1,5 @@
 import { Field } from '@base-ui/react/field'
-import { useRef, type ComponentProps } from 'react'
+import { useCallback, useRef, type ComponentProps, type Ref } from 'react'
 
 import { Icon, type IconSize } from '../icons/Icon'
 
@@ -46,6 +46,20 @@ export function clearControl(control: HTMLInputElement | HTMLTextAreaElement | n
   control.focus()
 }
 
+// Одна ссылка на поле для двоих: компоненту — чтобы работал крестик, странице — чтобы поставить фокус.
+export function useSharedRef<T>(outer: Ref<T> | undefined) {
+  const inner = useRef<T | null>(null)
+  const set = useCallback(
+    (node: T | null) => {
+      inner.current = node
+      if (typeof outer === 'function') outer(node)
+      else if (outer) outer.current = node
+    },
+    [outer],
+  )
+  return [inner, set] as const
+}
+
 // Однострочное поле ввода. Поведение — Field из Base UI: связь ошибки и поля, состояния атрибутами.
 export function TextInput({
   size = 'xl',
@@ -62,9 +76,10 @@ export function TextInput({
   disabled = false,
   className,
   'data-ds-state': dsState,
+  ref,
   ...input
 }: TextInputProps) {
-  const control = useRef<HTMLInputElement>(null)
+  const [control, setControl] = useSharedRef<HTMLInputElement>(ref)
   const icon = ICON_SIZE[size]
   const text = FIELD_TEXT[size]
   const showClear = clearable && !disabled
@@ -84,7 +99,7 @@ export function TextInput({
         <span className="ds-field__left">
           {startIcon ? <Icon name="search" size={icon} /> : null}
           {label ? <span className={`ds-field__label ds-text-${text}-strong`}>{label}</span> : null}
-          <Field.Control className="ds-field__control" {...input} ref={control} />
+          <Field.Control className="ds-field__control" {...input} ref={setControl} />
         </span>
         {hasRight ? (
           <span className="ds-field__right">
