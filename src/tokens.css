@@ -1,0 +1,170 @@
+/*
+ * Токены. Источник — Variables кита в Figma, сняты 2026-10-09: 105 переменных в трёх коллекциях.
+ * Имя — имя Figma, косая черта заменена дефисом: color/fg/primary → --color-fg-primary.
+ * Строки «@collection» читает страница токенов в витрине — по ним она делит список и считает.
+ */
+
+:root {
+  /* @collection Primitive */
+
+  /* Цвет — оранжевый */
+  --orange-fill: #ff4800;
+  --orange-text: #f34500;
+  --orange-fill-hover: #e84100;
+  --orange-tint-chip: rgb(255 72 0 / 0.15);
+  --orange-tint-block: rgb(255 72 0 / 0.05);
+
+  /* Цвет — синий */
+  --blue-500: #2684ff;
+  --blue-dark: #0b57d0;
+  --blue-tint-chip: rgb(38 132 255 / 0.15);
+  --blue-tint-block: rgb(38 132 255 / 0.05);
+
+  /* Цвет — зелёный */
+  --green-500: #36b37e;
+  --green-dark: #146b47;
+  --green-tint-chip: rgb(54 179 126 / 0.15);
+  --green-tint-block: rgb(54 179 126 / 0.05);
+
+  /* Цвет — бирюзовый */
+  --teal-500: #00b8d9;
+  --teal-dark: #0e7490;
+  --teal-tint-chip: rgb(0 184 217 / 0.15);
+  --teal-tint-block: rgb(0 184 217 / 0.05);
+
+  /* Цвет — текст и линии */
+  --ink-900: #15181f;
+  --ink-700: #393f4d;
+  --ink-500: #5c6473;
+  --ink-300: #888fa1;
+  --ink-200: #aeb4c2;
+  --line-100: #e2e6ee;
+  --line-50: #eef1f5;
+
+  /* Цвет — белый и нейтральные */
+  --white: #ffffff;
+  --white-70: rgb(255 255 255 / 0.7);
+  --neutral-tint-lighter: #f8fafb;
+  --neutral-tint-light: #f6f8fa;
+  --neutral-tint-block: rgb(23 48 107 / 0.045);
+
+  /* Цвет — статусы */
+  --color-status-error: #c30401;
+  --color-status-success: #147a45;
+  --color-status-warning: #b7791f;
+
+  /* Отступы, Desktop */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-80: 80px;
+  --space-96: 96px;
+
+  /* Отступы, Mobile */
+  --space-mobile-5: 5px;
+  --space-mobile-10: 10px;
+  --space-mobile-20: 20px;
+  --space-mobile-40: 40px;
+
+  /* Скругления компонентов */
+  --radius-control-xs: 8px;
+  --radius-control-s: 10px;
+  --radius-control-m: 12px;
+  --radius-control-l: 16px;
+  --radius-control-xl: 20px;
+
+  /* Скругления блоков, Desktop */
+  --radius-block-12: 12px;
+  --radius-block-16: 16px;
+  --radius-block-24: 24px;
+  --radius-block-32: 32px;
+  --radius-block-48: 48px;
+  --radius-block-64: 64px;
+
+  /* Скругления блоков, Mobile */
+  --radius-mobile-5: 5px;
+  --radius-mobile-10: 10px;
+  --radius-mobile-20: 20px;
+  --radius-mobile-40: 40px;
+
+  /* Капсула */
+  --radius-full: 999px;
+
+  /* @collection Semantic */
+
+  /* Текст, иконки, линии */
+  --color-fg-primary: var(--ink-900);
+  --color-fg-secondary: var(--ink-500);
+  --color-fg-disabled: var(--ink-200);
+  --color-fg-inverse: var(--white);
+  --color-fg-inverse-secondary: var(--white-70);
+  --color-fg-brand: var(--orange-text);
+  --color-fg-border: var(--line-100);
+  --color-fg-border-subtle: var(--line-50);
+  --color-fg-border-hover: var(--ink-200);
+  --color-fg-focus: var(--orange-fill);
+  --color-fg-danger: var(--color-status-error);
+
+  /* Заливки */
+  --color-bg-default: var(--white);
+  --color-bg-subtle: var(--neutral-tint-lighter);
+  --color-bg-disabled: var(--neutral-tint-light);
+  --color-bg-neutral-hover: var(--neutral-tint-block);
+  --color-bg-brand: var(--orange-fill);
+  --color-bg-brand-hover: var(--orange-fill-hover);
+  --color-bg-brand-tint: var(--orange-tint-chip);
+
+  /* Цвета направлений */
+  --color-accent-color-blue-solid: var(--blue-500);
+  --color-accent-color-blue-tint: var(--blue-tint-chip);
+  --color-accent-color-blue-tint-soft: var(--blue-tint-block);
+  --color-accent-color-green-solid: var(--green-500);
+  --color-accent-color-green-tint: var(--green-tint-chip);
+  --color-accent-color-green-tint-soft: var(--green-tint-block);
+  --color-accent-color-teal-solid: var(--teal-500);
+  --color-accent-color-teal-tint: var(--teal-tint-chip);
+  --color-accent-color-teal-tint-soft: var(--teal-tint-block);
+
+  /* @collection Responsive — режим Desktop, окно от 1024 */
+  --font-size-display: 64px;
+  --line-height-display: 68px;
+  --font-size-h1: 40px;
+  --line-height-h1: 48px;
+  --font-size-h2: 30px;
+  --line-height-h2: 36px;
+  --font-size-h3: 22px;
+  --line-height-h3: 28px;
+  --font-size-body-1: 20px;
+  --line-height-body-1: 28px;
+  --font-size-body-2: 17px;
+  --line-height-body-2: 24px;
+  --font-size-decor-mono: 15px;
+  --line-height-decor-mono: 20px;
+}
+
+/* @mode Mobile — окно уже 1024. Порог: design-system-guide.md, «Порог и поведение между ширинами». */
+@media (max-width: 1023px) {
+  :root {
+    --font-size-display: 24px;
+    --line-height-display: 28px;
+    --font-size-h1: 18px;
+    --line-height-h1: 22px;
+    --font-size-h2: 18px;
+    --line-height-h2: 22px;
+    --font-size-h3: 16px;
+    --line-height-h3: 20px;
+    --font-size-body-1: 14px;
+    --line-height-body-1: 20px;
+    --font-size-body-2: 14px;
+    --line-height-body-2: 20px;
+    --font-size-decor-mono: 11px;
+    --line-height-decor-mono: 16px;
+  }
+}

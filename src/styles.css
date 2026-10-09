@@ -1,4 +1,6 @@
 /* Стили библиотеки. Один файл на пакет. */
+@import './tokens.css';
+
 .ds-probe {
   display: inline-block;
   padding: 8px 12px;
