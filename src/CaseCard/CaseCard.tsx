@@ -58,7 +58,7 @@ export function CaseCard({
         {media}
         <div className="ds-case-card__badges">
           {status ? (
-            <Chip size={chip} startIcon={statusIcon}>
+            <Chip className="ds-case-card__status" size={chip} startIcon={statusIcon}>
               {status}
             </Chip>
           ) : (

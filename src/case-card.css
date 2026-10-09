@@ -50,6 +50,11 @@
   justify-content: space-between;
 }
 
+/* Точка в метке статуса — оранжевая, текст метки остаётся основным. В ките цвет вписан числом #FF4800 — это orange/fill. */
+.ds-case-card__status .ds-icon {
+  color: var(--ds-orange-fill);
+}
+
 .ds-case-card__content {
   display: flex;
   flex: 1;
