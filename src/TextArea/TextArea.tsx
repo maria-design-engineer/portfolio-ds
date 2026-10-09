@@ -1,6 +1,8 @@
 import { Field } from '@base-ui/react/field'
 import type { ComponentProps } from 'react'
 
+type ControlProps = ComponentProps<typeof Field.Control>
+
 import { Icon, type IconSize } from '../icons/Icon'
 import { clearControl, FIELD_TEXT, useSharedRef } from '../TextInput/TextInput'
 
@@ -46,7 +48,11 @@ export function TextArea({
   const [control, setControl] = useSharedRef<HTMLTextAreaElement>(ref)
   const icon = ICON_SIZE[size]
   const text = FIELD_TEXT[size]
-  const showClear = clearable && !disabled
+  // Поле, которое нельзя править, нельзя править и крестиком.
+  const showClear = clearable && !disabled && !textarea.readOnly
+  // Атрибуты, которых у input нет, идут прямо в textarea; остальные — в Base UI, как у TextInput:
+  // так форма видит имя и значение поля и привязывает к нему ошибку по имени.
+  const { rows, cols, wrap, ...control_ } = textarea
   // По мастерам кита иконка стоит в `Error inline`; в `Error outline` ошибку несёт строка под полем.
   const showErrorIcon = error && (errorIcon ?? !errorText)
   const showError = error && Boolean(errorText)
@@ -56,11 +62,18 @@ export function TextArea({
       className={['ds-field', 'ds-text-area', className].filter(Boolean).join(' ')}
       data-size={size}
       data-ds-state={dsState}
-      invalid={error}
+      // Имя — и корню поля: форма привязывает ошибку по имени уже при серверной отрисовке, до браузера.
+      name={textarea.name}
+      invalid={error || undefined}
       disabled={disabled}
     >
       <div className={`ds-field__box ds-text-${text}`} onClick={(event) => !(event.target as Element).closest('button') && control.current?.focus()}>
-        <Field.Control className="ds-field__control" render={<textarea {...textarea} ref={setControl} />} />
+        <Field.Control
+          className="ds-field__control"
+          render={<textarea rows={rows} cols={cols} wrap={wrap} />}
+          {...(control_ as ControlProps)}
+          ref={setControl as ControlProps['ref']}
+        />
         {showClear || showErrorIcon ? (
           <span className="ds-field__right">
             {showClear ? (
@@ -87,10 +100,17 @@ export function TextArea({
             <Field.Error className="ds-field__error ds-text-control-m" match>
               {errorText}
             </Field.Error>
+          ) : (
+            <Field.Error className="ds-field__error ds-text-control-m" />
+          )}
+          {additional ? (
+            <span className={`ds-field__additional ds-text-control-${size === 's' ? 's' : 'm'}`}>{additional}</span>
           ) : null}
-          {additional ? <span className={`ds-field__additional ds-text-control-${size === 's' ? 's' : 'm'}`}>{additional}</span> : null}
         </div>
-      ) : null}
+      ) : (
+        // Своего текста нет — строка покажет сообщение формы, если форма привязала ошибку к полю по имени.
+        <Field.Error className="ds-field__error ds-text-control-m" />
+      )}
     </Field.Root>
   )
 }

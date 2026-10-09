@@ -82,7 +82,8 @@ export function TextInput({
   const [control, setControl] = useSharedRef<HTMLInputElement>(ref)
   const icon = ICON_SIZE[size]
   const text = FIELD_TEXT[size]
-  const showClear = clearable && !disabled
+  // Поле, которое нельзя править, нельзя править и крестиком.
+  const showClear = clearable && !disabled && !input.readOnly
   // По мастерам кита иконка стоит в `Error inline`; в `Error outline` ошибку несёт строка под полем.
   const showErrorIcon = error && (errorIcon ?? !errorText)
   const hasRight = showClear || editIcon || eyeIcon || Boolean(additional) || showErrorIcon
@@ -92,7 +93,9 @@ export function TextInput({
       className={['ds-field', 'ds-text-input', className].filter(Boolean).join(' ')}
       data-size={size}
       data-ds-state={dsState}
-      invalid={error}
+      // Имя — и корню поля: форма привязывает ошибку по имени уже при серверной отрисовке, до браузера.
+      name={input.name}
+      invalid={error || undefined}
       disabled={disabled}
     >
       <div className={`ds-field__box ds-text-${text}`} onClick={(event) => !(event.target as Element).closest('button') && control.current?.focus()}>
@@ -136,7 +139,10 @@ export function TextInput({
         <Field.Error className="ds-field__error ds-text-control-m" match>
           {errorText}
         </Field.Error>
-      ) : null}
+      ) : (
+        // Своего текста нет — строка покажет сообщение формы, если форма привязала ошибку к полю по имени.
+        <Field.Error className="ds-field__error ds-text-control-m" />
+      )}
     </Field.Root>
   )
 }
