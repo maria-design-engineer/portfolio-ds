@@ -1,0 +1,59 @@
+# Собирает витрину Storybook и публикует её на GitHub Pages.
+# Запускается отправкой тега вида v* — на адресе всегда стоит названный релиз
+# (решение в ds-plan.md, «Архитектурные решения»). Ручной запуск оставлен на случай
+# пересборки без нового тега. Версии шагов точные: плавающий тег однажды
+# приедет другой версией и сломает сборку без единой правки в проекте.
+name: Storybook to GitHub Pages
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+
+      - name: Node
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24.16.0
+
+      # Зависимости по файлу замка, а не свежие: иначе у автосборки свой
+      # набор версий и витрина на адресе отличается от локальной.
+      - name: Install
+        run: npm ci
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6.0.0
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: storybook-static
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1
