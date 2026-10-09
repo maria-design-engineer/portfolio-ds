@@ -3,6 +3,8 @@
 @import './fonts.css';
 @import './kit-styles.css';
 @import './field.css';
+@import './spin.css';
+@import './button.css';
 
 .ds-probe {
   display: inline-block;

@@ -7,22 +7,8 @@ const meta = {
   title: 'TextInput',
   component: TextInput,
   args: { size: 'xl', defaultValue: 'Content' },
-  argTypes: {
-    size: { control: 'inline-radio', options: ['s', 'm', 'l', 'xl'] },
-    label: { control: 'text' },
-    additional: { control: 'text' },
-    errorText: { control: 'text' },
-    placeholder: { control: 'text' },
-    clearLabel: { control: 'text' },
-    startIcon: { control: 'boolean' },
-    clearable: { control: 'boolean' },
-    editIcon: { control: 'boolean' },
-    eyeIcon: { control: 'boolean' },
-    errorIcon: { control: 'boolean' },
-    error: { control: 'boolean' },
-    disabled: { control: 'boolean' },
-    'data-ds-state': { table: { disable: true } },
-  },
+  // На страницах с разложенными вариантами панель не нужна; у Playground она своя.
+  parameters: { controls: { disable: true } },
 } satisfies Meta<typeof TextInput>
 
 export default meta
@@ -53,11 +39,80 @@ function Card({ name, children }: { name: string; children: ReactNode }) {
   )
 }
 
-// key пересоздаёт поле, когда в Controls меняют defaultValue: иначе браузер держит прежний текст.
-export const Playground: Story = {
-  render: (args) => (
+// Панель Controls повторяет панель свойств набора в Figma: те же имена, значения и порядок.
+type PanelArgs = {
+  Size: string
+  State: string
+  Content: boolean
+  '↳ Content text': string
+  Label: boolean
+  '↳ Label text': string
+  'Start icon': boolean
+  'Right side': boolean
+  'Clear button': boolean
+  'Edit icon': boolean
+  'Eye icon': boolean
+  Additional: boolean
+  '↳ Additional text': string
+  'Error icon': boolean
+  'Error text': string
+}
+
+export const Playground: StoryObj<PanelArgs> = {
+  args: {
+    Size: 'XL',
+    State: 'Default',
+    Content: true,
+    '↳ Content text': 'Content',
+    Label: false,
+    '↳ Label text': 'Label:',
+    'Start icon': false,
+    'Right side': false,
+    'Clear button': false,
+    'Edit icon': false,
+    'Eye icon': false,
+    Additional: false,
+    '↳ Additional text': 'Additional',
+    'Error icon': true,
+    'Error text': 'Error content',
+  },
+  argTypes: {
+    Size: { control: 'inline-radio', options: ['S', 'M', 'L', 'XL'] },
+    State: { control: 'inline-radio', options: Object.keys(states) },
+    Content: { control: 'boolean' },
+    '↳ Content text': { control: 'text' },
+    Label: { control: 'boolean' },
+    '↳ Label text': { control: 'text' },
+    'Start icon': { control: 'boolean' },
+    'Right side': { control: 'boolean' },
+    'Clear button': { control: 'boolean' },
+    'Edit icon': { control: 'boolean' },
+    'Eye icon': { control: 'boolean' },
+    Additional: { control: 'boolean' },
+    '↳ Additional text': { control: 'text' },
+    'Error icon': { control: 'boolean' },
+    'Error text': { control: 'text' },
+  },
+  parameters: { controls: { disable: false, include: ['Size', 'State', 'Content', '↳ Content text', 'Label', '↳ Label text', 'Start icon', 'Right side', 'Clear button', 'Edit icon', 'Eye icon', 'Additional', '↳ Additional text', 'Error icon', 'Error text'] } },
+  render: (panel) => (
     <div style={{ width: 340 }}>
-      <TextInput key={String(args.defaultValue)} {...args} />
+      {/* key пересоздаёт поле при смене панели: иначе браузер держит прежний текст */}
+      <TextInput
+        key={JSON.stringify(panel)}
+        {...states[panel.State]}
+        size={panel.Size.toLowerCase() as TextInputSize}
+        defaultValue={panel.Content && panel.State !== 'Suggest' ? panel['↳ Content text'] : ''}
+        placeholder={panel.State === 'Suggest' ? panel['↳ Content text'] : undefined}
+        label={panel.Label ? panel['↳ Label text'] : undefined}
+        startIcon={panel['Start icon']}
+        clearable={panel['Right side'] && panel['Clear button']}
+        clearLabel="Clear"
+        editIcon={panel['Right side'] && panel['Edit icon']}
+        eyeIcon={panel['Right side'] && panel['Eye icon']}
+        additional={panel['Right side'] && panel.Additional ? panel['↳ Additional text'] : undefined}
+        errorIcon={panel['Error icon'] && panel.State === 'Error inline'}
+        errorText={panel.State === 'Error outline' ? panel['Error text'] : undefined}
+      />
     </div>
   ),
 }

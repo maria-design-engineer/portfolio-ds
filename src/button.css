@@ -1,0 +1,212 @@
+/*
+ * Button. Источник — набор кита 738:9068: 5 видов × 5 размеров × 6 состояний × с текстом и только иконка.
+ * Disabled приходит атрибутом Base UI data-disabled; Selected и Loading — своими data-selected, data-loading.
+ * Атрибут data-ds-state — только для витрины: показать Hover и Focus карточкой, без мыши и клавиатуры.
+ */
+
+.ds-button {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: var(--ds-color-fg-primary);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  /* Нажатие: отклик 120 мс, ease-out — commons/motion.md. */
+  transition: transform 120ms ease-out;
+}
+
+.ds-button__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-button__spin {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ds-button__spin .ds-spin {
+  color: inherit;
+}
+
+/* Размеры: высота, отступы по бокам, зазор между иконкой и текстом, скругление */
+
+.ds-button[data-size='xl'] {
+  height: 52px;
+  padding: 0 var(--ds-space-24);
+  border-radius: var(--ds-radius-control-xl);
+}
+.ds-button[data-size='l'] {
+  height: 42px;
+  padding: 0 var(--ds-space-16);
+  border-radius: var(--ds-radius-control-l);
+}
+.ds-button[data-size='m'] {
+  height: 34px;
+  padding: 0 var(--ds-space-12);
+  border-radius: var(--ds-radius-control-m);
+}
+.ds-button[data-size='s'] {
+  height: 26px;
+  padding: 0 var(--ds-space-8);
+  border-radius: var(--ds-radius-control-s);
+}
+.ds-button[data-size='xs'] {
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--ds-radius-control-xs);
+}
+
+.ds-button[data-size='xl'] .ds-button__content {
+  gap: 12px;
+}
+.ds-button[data-size='l'] .ds-button__content,
+.ds-button[data-size='m'] .ds-button__content {
+  gap: 8px;
+}
+.ds-button[data-size='s'] .ds-button__content,
+.ds-button[data-size='xs'] .ds-button__content {
+  gap: 4px;
+}
+
+/* Только иконка: квадрат со стороной в высоту кнопки */
+
+.ds-button[data-icon-only] {
+  padding: 0;
+}
+.ds-button[data-icon-only][data-size='xl'] {
+  width: 52px;
+}
+.ds-button[data-icon-only][data-size='l'] {
+  width: 42px;
+}
+.ds-button[data-icon-only][data-size='m'] {
+  width: 34px;
+}
+.ds-button[data-icon-only][data-size='s'] {
+  width: 26px;
+}
+.ds-button[data-icon-only][data-size='xs'] {
+  width: 22px;
+}
+
+/* Виды — Default */
+
+.ds-button[data-view='primary-brand'] {
+  background: var(--ds-color-bg-brand);
+  color: var(--ds-color-fg-inverse);
+}
+.ds-button[data-view='outlined-action'] {
+  box-shadow: inset 0 0 0 1px var(--ds-color-bg-brand);
+  color: var(--ds-color-fg-brand);
+}
+.ds-button[data-view='flat'] {
+  color: var(--ds-color-fg-primary);
+}
+.ds-button[data-view='flat-action'] {
+  color: var(--ds-color-fg-brand);
+}
+.ds-button[data-view='flat-secondary'] {
+  color: var(--ds-color-fg-secondary);
+}
+
+/* Hover — только мышью: на тач-экране касание даёт ложное наведение */
+
+@media (hover: hover) {
+  .ds-button[data-view='primary-brand']:hover {
+    background: var(--ds-color-bg-brand-hover);
+  }
+  .ds-button[data-view='outlined-action']:hover {
+    background: var(--ds-color-bg-brand-tint);
+  }
+  .ds-button[data-view='flat']:hover,
+  .ds-button[data-view='flat-action']:hover,
+  .ds-button[data-view='flat-secondary']:hover {
+    background: var(--ds-color-bg-neutral-hover);
+  }
+}
+.ds-button[data-view='primary-brand'][data-ds-state='hover'] {
+  background: var(--ds-color-bg-brand-hover);
+}
+.ds-button[data-view='outlined-action'][data-ds-state='hover'] {
+  background: var(--ds-color-bg-brand-tint);
+}
+.ds-button[data-view='flat'][data-ds-state='hover'],
+.ds-button[data-view='flat-action'][data-ds-state='hover'],
+.ds-button[data-view='flat-secondary'][data-ds-state='hover'] {
+  background: var(--ds-color-bg-neutral-hover);
+}
+
+/* Focus — кольцо только с клавиатуры: толщина 2, на 3 шире кнопки */
+
+.ds-button:focus-visible,
+.ds-button[data-ds-state='focus'] {
+  outline: 2px solid var(--ds-color-fg-focus);
+  outline-offset: 1px;
+}
+
+/* Selected — одно у всех видов */
+
+.ds-button[data-selected],
+.ds-button[data-selected]:hover {
+  background: var(--ds-color-bg-brand-tint);
+  box-shadow: none;
+  color: var(--ds-color-fg-brand);
+}
+
+/* Loading — цвета как у Default; текст и иконки невидимы и держат ширину */
+
+.ds-button[data-loading] {
+  cursor: default;
+}
+.ds-button[data-loading] .ds-button__content {
+  opacity: 0;
+}
+.ds-button[data-view='primary-brand'][data-loading]:hover {
+  background: var(--ds-color-bg-brand);
+}
+.ds-button[data-view='outlined-action'][data-loading]:hover,
+.ds-button[data-view='flat'][data-loading]:hover,
+.ds-button[data-view='flat-action'][data-loading]:hover,
+.ds-button[data-view='flat-secondary'][data-loading]:hover {
+  background: none;
+}
+
+/* Disabled — текст и иконка серые; фон есть у Primary-brand и Outlined-action, обводки нет */
+
+.ds-button[data-disabled]:not([data-loading]),
+.ds-button[data-disabled]:not([data-loading]):hover {
+  background: none;
+  box-shadow: none;
+  color: var(--ds-color-fg-disabled);
+  cursor: default;
+}
+.ds-button[data-view='primary-brand'][data-disabled]:not([data-loading]),
+.ds-button[data-view='outlined-action'][data-disabled]:not([data-loading]) {
+  background: var(--ds-color-bg-disabled);
+}
+
+/* Нажатие: кнопка уменьшается на 3% и возвращается, место вокруг не сдвигается */
+
+.ds-button:active:not([data-disabled]) {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-button {
+    transition: none;
+  }
+  .ds-button:active:not([data-disabled]) {
+    transform: none;
+  }
+}
