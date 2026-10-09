@@ -2,80 +2,58 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import type { CSSProperties } from 'react'
 
 // Страница читает сам файл токенов: что в коде, то и на странице. Второго списка нет.
+import { readCollections, resolve, type Collection, type Token } from './showcase/css.stories.helpers'
 import tokensCss from './tokens.css?raw'
-
-type Token = { name: string; value: string; mobile?: string }
-type Collection = { name: string; tokens: Token[] }
-
-const DECLARATION = /(--[a-z0-9-]+):\s*([^;]+);/g
-
-function readDeclarations(css: string): Token[] {
-  return [...css.matchAll(DECLARATION)].map(([, name, value]) => ({ name, value: value.trim() }))
-}
-
-function readCollections(css: string): Collection[] {
-  const [desktop, mobile = ''] = css.split('@mode Mobile')
-  const mobileValues = new Map(readDeclarations(mobile).map((t) => [t.name, t.value]))
-
-  return desktop
-    .split('@collection ')
-    .slice(1)
-    .map((chunk) => ({
-      name: chunk.match(/^[A-Za-z]+/)?.[0] ?? '',
-      tokens: readDeclarations(chunk).map((t) => ({ ...t, mobile: mobileValues.get(t.name) })),
-    }))
-}
 
 const collections = readCollections(tokensCss)
 const all = new Map(collections.flatMap((c) => c.tokens).map((t) => [t.name, t.value]))
 const total = collections.reduce((sum, c) => sum + c.tokens.length, 0)
 
-// Значение, на которое ссылается переменная Semantic: var(--ink-900) → #15181f.
-function resolve(value: string): string {
-  const ref = value.match(/^var\((--[a-z0-9-]+)\)$/)?.[1]
-  return ref ? resolve(all.get(ref) ?? value) : value
+const result = (token: Token) => resolve(token.value, all)
+const isColor = (token: Token) => {
+  const resolved = result(token)
+  return 'value' in resolved && /^(#|rgb)/.test(resolved.value)
 }
 
-const isColor = (value: string) => /^(#|rgb)/.test(resolve(value))
-
-const page: CSSProperties = {
-  padding: 32,
-  background: 'var(--color-bg-default)',
-  color: 'var(--color-fg-primary)',
-  font: '13px/18px system-ui, sans-serif',
-}
+const page: CSSProperties = { padding: 32, background: 'var(--ds-color-bg-default)', color: 'var(--ds-color-fg-primary)' }
 const cell: CSSProperties = {
   padding: '8px 16px 8px 0',
-  borderBottom: '1px solid var(--color-fg-border-subtle)',
+  borderBottom: '1px solid var(--ds-color-fg-border-subtle)',
   textAlign: 'left',
   verticalAlign: 'middle',
   whiteSpace: 'nowrap',
 }
-const head: CSSProperties = { ...cell, color: 'var(--color-fg-secondary)', fontWeight: 400 }
+const head: CSSProperties = { ...cell, color: 'var(--ds-color-fg-secondary)', fontWeight: 400 }
 const mono: CSSProperties = { fontFamily: 'ui-monospace, Menlo, monospace' }
 const swatch: CSSProperties = {
   display: 'inline-block',
   width: 32,
   height: 32,
   borderRadius: 8,
-  border: '1px solid var(--color-fg-border)',
+  border: '1px solid var(--ds-color-fg-border)',
   verticalAlign: 'middle',
 }
 
 function Sample({ token }: { token: Token }) {
-  if (isColor(token.value)) return <span style={{ ...swatch, background: `var(${token.name})` }} />
-  if (token.name.startsWith('--radius'))
-    return <span style={{ ...swatch, borderRadius: `min(var(${token.name}), 16px)`, background: 'var(--color-bg-subtle)' }} />
-  if (token.name.startsWith('--space'))
-    return <span style={{ display: 'inline-block', width: `var(${token.name})`, height: 12, background: 'var(--color-bg-brand)' }} />
+  if (isColor(token)) return <span style={{ ...swatch, background: `var(${token.name})` }} />
+  if (token.name.startsWith('--ds-radius'))
+    return <span style={{ ...swatch, borderRadius: `min(var(${token.name}), 16px)`, background: 'var(--ds-color-bg-subtle)' }} />
+  if (token.name.startsWith('--ds-space'))
+    return <span style={{ display: 'inline-block', width: `var(${token.name})`, height: 12, background: 'var(--ds-color-bg-brand)' }} />
   return null
+}
+
+function Final({ token }: { token: Token }) {
+  const resolved = result(token)
+  if ('error' in resolved) return <span style={{ color: 'var(--ds-color-fg-danger)' }}>ошибка — {resolved.error}</span>
+  return <>{resolved.value === token.value ? '' : resolved.value}</>
 }
 
 function CollectionTable({ collection }: { collection: Collection }) {
   const responsive = collection.tokens.some((t) => t.mobile !== undefined)
   return (
     <section style={{ marginBottom: 48 }}>
-      <h2 style={{ margin: '0 0 12px', font: '600 17px/24px system-ui, sans-serif' }}>
+      <h2 className="ds-text-subhead" style={{ margin: '0 0 12px' }}>
         {collection.name} — {collection.tokens.length}
       </h2>
       <table style={{ borderCollapse: 'collapse' }}>
@@ -95,9 +73,7 @@ function CollectionTable({ collection }: { collection: Collection }) {
               </td>
               <td style={{ ...cell, ...mono }}>{token.name}</td>
               <td style={{ ...cell, ...mono }}>{token.value}</td>
-              <td style={{ ...cell, ...mono }}>
-                {responsive ? token.mobile : token.value === resolve(token.value) ? '' : resolve(token.value)}
-              </td>
+              <td style={{ ...cell, ...mono }}>{responsive ? token.mobile : <Final token={token} />}</td>
             </tr>
           ))}
         </tbody>
@@ -108,9 +84,11 @@ function CollectionTable({ collection }: { collection: Collection }) {
 
 function TokensPage() {
   return (
-    <div style={page}>
-      <h1 style={{ margin: '0 0 8px', font: '700 22px/28px system-ui, sans-serif' }}>Токены</h1>
-      <p style={{ margin: '0 0 32px', color: 'var(--color-fg-secondary)' }}>
+    <div className="ds-text-control-m" style={page}>
+      <h1 className="ds-text-h3" style={{ margin: '0 0 8px' }}>
+        Токены
+      </h1>
+      <p style={{ margin: '0 0 32px', color: 'var(--ds-color-fg-secondary)' }}>
         Всего переменных: {total} · {collections.map((c) => `${c.name} ${c.tokens.length}`).join(' · ')}
       </p>
       {collections.map((collection) => (

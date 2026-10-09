@@ -40,14 +40,14 @@ const states: Record<string, Partial<TextInputProps>> = {
   'Error outline': { error: true, errorText: 'Error content' },
 }
 
-const caption: CSSProperties = { marginBottom: 8, color: 'var(--color-fg-secondary)', font: 'var(--text-control-m)' }
+const caption: CSSProperties = { marginBottom: 8, color: 'var(--ds-color-fg-secondary)' }
 const column: CSSProperties = { display: 'flex', flexDirection: 'column', gap: 24, width: 340 }
 const grid: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(4, 340px)', gap: '32px 40px', alignItems: 'start' }
 
 function Card({ name, children }: { name: string; children: ReactNode }) {
   return (
     <div>
-      <div style={caption}>{name}</div>
+      <div className="ds-text-control-m" style={caption}>{name}</div>
       {children}
     </div>
   )

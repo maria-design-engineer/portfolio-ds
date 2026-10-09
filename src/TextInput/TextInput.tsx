@@ -34,6 +34,8 @@ export type TextInputProps = Omit<ComponentProps<'input'>, 'size' | 'className' 
 }
 
 const ICON_SIZE: Record<TextInputSize, IconSize> = { xl: 16, l: 16, m: 12, s: 12 }
+// Стиль текста поля по размеру — таблица профиля: XL и L — control/l, M — control/m, S — control/s.
+export const FIELD_TEXT: Record<TextInputSize, string> = { xl: 'control-l', l: 'control-l', m: 'control-m', s: 'control-s' }
 
 // Стереть текст так, чтобы страница узнала об этом через свой onChange — и при своём value, и без него.
 export function clearControl(control: HTMLInputElement | HTMLTextAreaElement | null) {
@@ -64,6 +66,7 @@ export function TextInput({
 }: TextInputProps) {
   const control = useRef<HTMLInputElement>(null)
   const icon = ICON_SIZE[size]
+  const text = FIELD_TEXT[size]
   const showClear = clearable && !disabled
   // По мастерам кита иконка стоит в `Error inline`; в `Error outline` ошибку несёт строка под полем.
   const showErrorIcon = error && (errorIcon ?? !errorText)
@@ -77,10 +80,10 @@ export function TextInput({
       invalid={error}
       disabled={disabled}
     >
-      <div className="ds-field__box" onClick={(event) => !(event.target as Element).closest('button') && control.current?.focus()}>
+      <div className={`ds-field__box ds-text-${text}`} onClick={(event) => !(event.target as Element).closest('button') && control.current?.focus()}>
         <span className="ds-field__left">
           {startIcon ? <Icon name="search" size={icon} /> : null}
-          {label ? <span className="ds-field__label">{label}</span> : null}
+          {label ? <span className={`ds-field__label ds-text-${text}-strong`}>{label}</span> : null}
           <Field.Control className="ds-field__control" {...input} ref={control} />
         </span>
         {hasRight ? (
@@ -105,7 +108,7 @@ export function TextInput({
                 <Icon name="eye" size={icon} />
               </span>
             ) : null}
-            {additional ? <span className="ds-field__additional">{additional}</span> : null}
+            {additional ? <span className="ds-field__additional ds-text-control-s">{additional}</span> : null}
             {showErrorIcon ? (
               <span className="ds-field__error-icon">
                 <Icon name="warning" size={icon} />
@@ -115,7 +118,7 @@ export function TextInput({
         ) : null}
       </div>
       {error && errorText ? (
-        <Field.Error className="ds-field__error" match>
+        <Field.Error className="ds-field__error ds-text-control-m" match>
           {errorText}
         </Field.Error>
       ) : null}

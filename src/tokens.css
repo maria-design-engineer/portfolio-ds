@@ -1,6 +1,7 @@
 /*
  * Токены. Источник — Variables кита в Figma, сняты 2026-10-09: 105 переменных в трёх коллекциях.
- * Имя — имя Figma, косая черта заменена дефисом: color/fg/primary → --color-fg-primary.
+ * Имя — приставка --ds- и имя Figma, косая черта заменена дефисом: color/fg/primary → --ds-color-fg-primary.
+ * Приставка отделяет переменные библиотеки от имён темы Tailwind и чужого кода — решение Марии 2026-10-09.
  * Строки «@collection» читает страница токенов в витрине — по ним она делит список и считает.
  */
 
@@ -8,163 +9,202 @@
   /* @collection Primitive */
 
   /* Цвет — оранжевый */
-  --orange-fill: #ff4800;
-  --orange-text: #f34500;
-  --orange-fill-hover: #e84100;
-  --orange-tint-chip: rgb(255 72 0 / 0.15);
-  --orange-tint-block: rgb(255 72 0 / 0.05);
+  --ds-orange-fill: #ff4800;
+  --ds-orange-text: #f34500;
+  --ds-orange-fill-hover: #e84100;
+  --ds-orange-tint-chip: rgb(255 72 0 / 0.15);
+  --ds-orange-tint-block: rgb(255 72 0 / 0.05);
 
   /* Цвет — синий */
-  --blue-500: #2684ff;
-  --blue-dark: #0b57d0;
-  --blue-tint-chip: rgb(38 132 255 / 0.15);
-  --blue-tint-block: rgb(38 132 255 / 0.05);
+  --ds-blue-500: #2684ff;
+  --ds-blue-dark: #0b57d0;
+  --ds-blue-tint-chip: rgb(38 132 255 / 0.15);
+  --ds-blue-tint-block: rgb(38 132 255 / 0.05);
 
   /* Цвет — зелёный */
-  --green-500: #36b37e;
-  --green-dark: #146b47;
-  --green-tint-chip: rgb(54 179 126 / 0.15);
-  --green-tint-block: rgb(54 179 126 / 0.05);
+  --ds-green-500: #36b37e;
+  --ds-green-dark: #146b47;
+  --ds-green-tint-chip: rgb(54 179 126 / 0.15);
+  --ds-green-tint-block: rgb(54 179 126 / 0.05);
 
   /* Цвет — бирюзовый */
-  --teal-500: #00b8d9;
-  --teal-dark: #0e7490;
-  --teal-tint-chip: rgb(0 184 217 / 0.15);
-  --teal-tint-block: rgb(0 184 217 / 0.05);
+  --ds-teal-500: #00b8d9;
+  --ds-teal-dark: #0e7490;
+  --ds-teal-tint-chip: rgb(0 184 217 / 0.15);
+  --ds-teal-tint-block: rgb(0 184 217 / 0.05);
 
   /* Цвет — текст и линии */
-  --ink-900: #15181f;
-  --ink-700: #393f4d;
-  --ink-500: #5c6473;
-  --ink-300: #888fa1;
-  --ink-200: #aeb4c2;
-  --line-100: #e2e6ee;
-  --line-50: #eef1f5;
+  --ds-ink-900: #15181f;
+  --ds-ink-700: #393f4d;
+  --ds-ink-500: #5c6473;
+  --ds-ink-300: #888fa1;
+  --ds-ink-200: #aeb4c2;
+  --ds-line-100: #e2e6ee;
+  --ds-line-50: #eef1f5;
 
   /* Цвет — белый и нейтральные */
-  --white: #ffffff;
-  --white-70: rgb(255 255 255 / 0.7);
-  --neutral-tint-lighter: #f8fafb;
-  --neutral-tint-light: #f6f8fa;
-  --neutral-tint-block: rgb(23 48 107 / 0.045);
+  --ds-white: #ffffff;
+  --ds-white-70: rgb(255 255 255 / 0.7);
+  --ds-neutral-tint-lighter: #f8fafb;
+  --ds-neutral-tint-light: #f6f8fa;
+  --ds-neutral-tint-block: rgb(23 48 107 / 0.045);
 
   /* Цвет — статусы */
-  --color-status-error: #c30401;
-  --color-status-success: #147a45;
-  --color-status-warning: #b7791f;
+  --ds-color-status-error: #c30401;
+  --ds-color-status-success: #147a45;
+  --ds-color-status-warning: #b7791f;
 
   /* Отступы, Desktop */
-  --space-4: 4px;
-  --space-8: 8px;
-  --space-12: 12px;
-  --space-16: 16px;
-  --space-20: 20px;
-  --space-24: 24px;
-  --space-32: 32px;
-  --space-40: 40px;
-  --space-48: 48px;
-  --space-64: 64px;
-  --space-80: 80px;
-  --space-96: 96px;
+  --ds-space-4: 4px;
+  --ds-space-8: 8px;
+  --ds-space-12: 12px;
+  --ds-space-16: 16px;
+  --ds-space-20: 20px;
+  --ds-space-24: 24px;
+  --ds-space-32: 32px;
+  --ds-space-40: 40px;
+  --ds-space-48: 48px;
+  --ds-space-64: 64px;
+  --ds-space-80: 80px;
+  --ds-space-96: 96px;
 
   /* Отступы, Mobile */
-  --space-mobile-5: 5px;
-  --space-mobile-10: 10px;
-  --space-mobile-20: 20px;
-  --space-mobile-40: 40px;
+  --ds-space-mobile-5: 5px;
+  --ds-space-mobile-10: 10px;
+  --ds-space-mobile-20: 20px;
+  --ds-space-mobile-40: 40px;
 
   /* Скругления компонентов */
-  --radius-control-xs: 8px;
-  --radius-control-s: 10px;
-  --radius-control-m: 12px;
-  --radius-control-l: 16px;
-  --radius-control-xl: 20px;
+  --ds-radius-control-xs: 8px;
+  --ds-radius-control-s: 10px;
+  --ds-radius-control-m: 12px;
+  --ds-radius-control-l: 16px;
+  --ds-radius-control-xl: 20px;
 
   /* Скругления блоков, Desktop */
-  --radius-block-12: 12px;
-  --radius-block-16: 16px;
-  --radius-block-24: 24px;
-  --radius-block-32: 32px;
-  --radius-block-48: 48px;
-  --radius-block-64: 64px;
+  --ds-radius-block-12: 12px;
+  --ds-radius-block-16: 16px;
+  --ds-radius-block-24: 24px;
+  --ds-radius-block-32: 32px;
+  --ds-radius-block-48: 48px;
+  --ds-radius-block-64: 64px;
 
   /* Скругления блоков, Mobile */
-  --radius-mobile-5: 5px;
-  --radius-mobile-10: 10px;
-  --radius-mobile-20: 20px;
-  --radius-mobile-40: 40px;
+  --ds-radius-mobile-5: 5px;
+  --ds-radius-mobile-10: 10px;
+  --ds-radius-mobile-20: 20px;
+  --ds-radius-mobile-40: 40px;
 
   /* Капсула */
-  --radius-full: 999px;
+  --ds-radius-full: 999px;
 
   /* @collection Semantic */
 
   /* Текст, иконки, линии */
-  --color-fg-primary: var(--ink-900);
-  --color-fg-secondary: var(--ink-500);
-  --color-fg-disabled: var(--ink-200);
-  --color-fg-inverse: var(--white);
-  --color-fg-inverse-secondary: var(--white-70);
-  --color-fg-brand: var(--orange-text);
-  --color-fg-border: var(--line-100);
-  --color-fg-border-subtle: var(--line-50);
-  --color-fg-border-hover: var(--ink-200);
-  --color-fg-focus: var(--orange-fill);
-  --color-fg-danger: var(--color-status-error);
+  --ds-color-fg-primary: var(--ds-ink-900);
+  --ds-color-fg-secondary: var(--ds-ink-500);
+  --ds-color-fg-disabled: var(--ds-ink-200);
+  --ds-color-fg-inverse: var(--ds-white);
+  --ds-color-fg-inverse-secondary: var(--ds-white-70);
+  --ds-color-fg-brand: var(--ds-orange-text);
+  --ds-color-fg-border: var(--ds-line-100);
+  --ds-color-fg-border-subtle: var(--ds-line-50);
+  --ds-color-fg-border-hover: var(--ds-ink-200);
+  --ds-color-fg-focus: var(--ds-orange-fill);
+  --ds-color-fg-danger: var(--ds-color-status-error);
 
   /* Заливки */
-  --color-bg-default: var(--white);
-  --color-bg-subtle: var(--neutral-tint-lighter);
-  --color-bg-disabled: var(--neutral-tint-light);
-  --color-bg-neutral-hover: var(--neutral-tint-block);
-  --color-bg-brand: var(--orange-fill);
-  --color-bg-brand-hover: var(--orange-fill-hover);
-  --color-bg-brand-tint: var(--orange-tint-chip);
+  --ds-color-bg-default: var(--ds-white);
+  --ds-color-bg-subtle: var(--ds-neutral-tint-lighter);
+  --ds-color-bg-disabled: var(--ds-neutral-tint-light);
+  --ds-color-bg-neutral-hover: var(--ds-neutral-tint-block);
+  --ds-color-bg-brand: var(--ds-orange-fill);
+  --ds-color-bg-brand-hover: var(--ds-orange-fill-hover);
+  --ds-color-bg-brand-tint: var(--ds-orange-tint-chip);
 
   /* Цвета направлений */
-  --color-accent-color-blue-solid: var(--blue-500);
-  --color-accent-color-blue-tint: var(--blue-tint-chip);
-  --color-accent-color-blue-tint-soft: var(--blue-tint-block);
-  --color-accent-color-green-solid: var(--green-500);
-  --color-accent-color-green-tint: var(--green-tint-chip);
-  --color-accent-color-green-tint-soft: var(--green-tint-block);
-  --color-accent-color-teal-solid: var(--teal-500);
-  --color-accent-color-teal-tint: var(--teal-tint-chip);
-  --color-accent-color-teal-tint-soft: var(--teal-tint-block);
+  --ds-color-accent-color-blue-solid: var(--ds-blue-500);
+  --ds-color-accent-color-blue-tint: var(--ds-blue-tint-chip);
+  --ds-color-accent-color-blue-tint-soft: var(--ds-blue-tint-block);
+  --ds-color-accent-color-green-solid: var(--ds-green-500);
+  --ds-color-accent-color-green-tint: var(--ds-green-tint-chip);
+  --ds-color-accent-color-green-tint-soft: var(--ds-green-tint-block);
+  --ds-color-accent-color-teal-solid: var(--ds-teal-500);
+  --ds-color-accent-color-teal-tint: var(--ds-teal-tint-chip);
+  --ds-color-accent-color-teal-tint-soft: var(--ds-teal-tint-block);
 
   /* @collection Responsive — режим Desktop, окно от 1024 */
-  --font-size-display: 64px;
-  --line-height-display: 68px;
-  --font-size-h1: 40px;
-  --line-height-h1: 48px;
-  --font-size-h2: 30px;
-  --line-height-h2: 36px;
-  --font-size-h3: 22px;
-  --line-height-h3: 28px;
-  --font-size-body-1: 20px;
-  --line-height-body-1: 28px;
-  --font-size-body-2: 17px;
-  --line-height-body-2: 24px;
-  --font-size-decor-mono: 15px;
-  --line-height-decor-mono: 20px;
+  --ds-font-size-display: 64px;
+  --ds-line-height-display: 68px;
+  --ds-font-size-h1: 40px;
+  --ds-line-height-h1: 48px;
+  --ds-font-size-h2: 30px;
+  --ds-line-height-h2: 36px;
+  --ds-font-size-h3: 22px;
+  --ds-line-height-h3: 28px;
+  --ds-font-size-body-1: 20px;
+  --ds-line-height-body-1: 28px;
+  --ds-font-size-body-2: 17px;
+  --ds-line-height-body-2: 24px;
+  --ds-font-size-decor-mono: 15px;
+  --ds-line-height-decor-mono: 20px;
 }
 
-/* @mode Mobile — окно уже 1024. Порог: design-system-guide.md, «Порог и поведение между ширинами». */
-@media (max-width: 1023px) {
+/* @mode Mobile — окно уже 1024. Порог: design-system-guide.md, «Адаптив главной». Граница одна, без зазора. */
+@media (width < 1024px) {
   :root {
-    --font-size-display: 24px;
-    --line-height-display: 28px;
-    --font-size-h1: 18px;
-    --line-height-h1: 22px;
-    --font-size-h2: 18px;
-    --line-height-h2: 22px;
-    --font-size-h3: 16px;
-    --line-height-h3: 20px;
-    --font-size-body-1: 14px;
-    --line-height-body-1: 20px;
-    --font-size-body-2: 14px;
-    --line-height-body-2: 20px;
-    --font-size-decor-mono: 11px;
-    --line-height-decor-mono: 16px;
+    --ds-font-size-display: 24px;
+    --ds-line-height-display: 28px;
+    --ds-font-size-h1: 18px;
+    --ds-line-height-h1: 22px;
+    --ds-font-size-h2: 18px;
+    --ds-line-height-h2: 22px;
+    --ds-font-size-h3: 16px;
+    --ds-line-height-h3: 20px;
+    --ds-font-size-body-1: 14px;
+    --ds-line-height-body-1: 20px;
+    --ds-font-size-body-2: 14px;
+    --ds-line-height-body-2: 20px;
+    --ds-font-size-decor-mono: 11px;
+    --ds-line-height-decor-mono: 16px;
   }
+}
+
+/*
+ * @forced Container — режим на контейнере, независимо от ширины окна: data-ds-mode="mobile" или "desktop".
+ * Нужен витрине — обзорная страница каждого режима — и странице, которой надо показать чужой режим.
+ * Значения повторяют блоки выше: правка размера вносится в оба места.
+ */
+[data-ds-mode='mobile'] {
+  --ds-font-size-display: 24px;
+  --ds-line-height-display: 28px;
+  --ds-font-size-h1: 18px;
+  --ds-line-height-h1: 22px;
+  --ds-font-size-h2: 18px;
+  --ds-line-height-h2: 22px;
+  --ds-font-size-h3: 16px;
+  --ds-line-height-h3: 20px;
+  --ds-font-size-body-1: 14px;
+  --ds-line-height-body-1: 20px;
+  --ds-font-size-body-2: 14px;
+  --ds-line-height-body-2: 20px;
+  --ds-font-size-decor-mono: 11px;
+  --ds-line-height-decor-mono: 16px;
+}
+
+[data-ds-mode='desktop'] {
+  --ds-font-size-display: 64px;
+  --ds-line-height-display: 68px;
+  --ds-font-size-h1: 40px;
+  --ds-line-height-h1: 48px;
+  --ds-font-size-h2: 30px;
+  --ds-line-height-h2: 36px;
+  --ds-font-size-h3: 22px;
+  --ds-line-height-h3: 28px;
+  --ds-font-size-body-1: 20px;
+  --ds-line-height-body-1: 28px;
+  --ds-font-size-body-2: 17px;
+  --ds-line-height-body-2: 24px;
+  --ds-font-size-decor-mono: 15px;
+  --ds-line-height-decor-mono: 20px;
 }

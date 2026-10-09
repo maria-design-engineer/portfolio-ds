@@ -2,7 +2,7 @@ import { Field } from '@base-ui/react/field'
 import { useRef, type ComponentProps } from 'react'
 
 import { Icon, type IconSize } from '../icons/Icon'
-import { clearControl } from '../TextInput/TextInput'
+import { clearControl, FIELD_TEXT } from '../TextInput/TextInput'
 
 export type TextAreaSize = 's' | 'm' | 'l' | 'xl'
 
@@ -44,6 +44,7 @@ export function TextArea({
 }: TextAreaProps) {
   const control = useRef<HTMLTextAreaElement>(null)
   const icon = ICON_SIZE[size]
+  const text = FIELD_TEXT[size]
   const showClear = clearable && !disabled
   // По мастерам кита иконка стоит в `Error inline`; в `Error outline` ошибку несёт строка под полем.
   const showErrorIcon = error && (errorIcon ?? !errorText)
@@ -57,7 +58,7 @@ export function TextArea({
       invalid={error}
       disabled={disabled}
     >
-      <div className="ds-field__box" onClick={(event) => !(event.target as Element).closest('button') && control.current?.focus()}>
+      <div className={`ds-field__box ds-text-${text}`} onClick={(event) => !(event.target as Element).closest('button') && control.current?.focus()}>
         <Field.Control className="ds-field__control" render={<textarea {...textarea} ref={control} />} />
         {showClear || showErrorIcon ? (
           <span className="ds-field__right">
@@ -82,11 +83,11 @@ export function TextArea({
       {showError || additional ? (
         <div className="ds-field__bottom">
           {showError ? (
-            <Field.Error className="ds-field__error" match>
+            <Field.Error className="ds-field__error ds-text-control-m" match>
               {errorText}
             </Field.Error>
           ) : null}
-          {additional ? <span className="ds-field__additional">{additional}</span> : null}
+          {additional ? <span className={`ds-field__additional ds-text-control-${size === 's' ? 's' : 'm'}`}>{additional}</span> : null}
         </div>
       ) : null}
     </Field.Root>

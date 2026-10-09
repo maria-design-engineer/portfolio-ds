@@ -1,48 +1,93 @@
 /*
  * Стили кита. Источник — стили Figma, сняты 2026-10-09: текстовых 15, теней 2, сеток 2.
- * Имя — имя Figma через дефис: control/l-strong → --text-control-l-strong, elevation/2 → --elevation-2.
- * Стиль текста — значение для свойства font: `font: var(--text-h1)`.
+ *
+ * Стиль текста — класс `ds-text-<имя Figma через дефис>`: control/l-strong → ds-text-control-l-strong.
+ * Класс несёт все свойства стиля сразу — вес, размер, высоту строки, семейство, межбуквенное —
+ * и считает их на самом элементе: внутри контейнера с режимом Mobile размер пересчитывается.
+ * Стиль текста переменной не заводится: значение свойства font не несёт межбуквенное и считается там, где объявлено.
  * Размер и высота строки у семи стилей приходят из токенов Responsive и меняются на пороге 1024.
  */
 
 :root {
   /* Семейства. Golos Text — весь интерфейс; Google Sans Code — строка в шапке. */
-  --font-family-sans: 'Golos Text', system-ui, sans-serif;
-  --font-family-mono: 'Google Sans Code', ui-monospace, monospace;
-
-  /* Текст — меняются по режимам Desktop и Mobile */
-  --text-display: 900 var(--font-size-display) / var(--line-height-display) var(--font-family-sans);
-  --text-h1: 900 var(--font-size-h1) / var(--line-height-h1) var(--font-family-sans);
-  --text-h2: 700 var(--font-size-h2) / var(--line-height-h2) var(--font-family-sans);
-  --text-h3: 700 var(--font-size-h3) / var(--line-height-h3) var(--font-family-sans);
-  --text-body-1: 400 var(--font-size-body-1) / var(--line-height-body-1) var(--font-family-sans);
-  --text-body-2: 400 var(--font-size-body-2) / var(--line-height-body-2) var(--font-family-sans);
-  --text-decor-mono: 400 var(--font-size-decor-mono) / var(--line-height-decor-mono) var(--font-family-mono);
-
-  /* Текст — одни на оба режима */
-  --text-control-l: 400 17px / 24px var(--font-family-sans);
-  --text-control-m: 400 13px / 18px var(--font-family-sans);
-  --text-control-s: 400 11px / 16px var(--font-family-sans);
-  --text-control-l-strong: 600 17px / 24px var(--font-family-sans);
-  --text-control-m-strong: 600 13px / 18px var(--font-family-sans);
-  --text-control-s-strong: 600 11px / 16px var(--font-family-sans);
-  --text-small: 500 13px / 16px var(--font-family-sans);
-  --text-subhead: 500 17px / 24px var(--font-family-sans);
-
-  /* Межбуквенное у body-2 — 0,5%. У остальных стилей ноль. */
-  --letter-spacing-body-2: 0.005em;
+  --ds-font-family-sans: 'Golos Text', system-ui, sans-serif;
+  --ds-font-family-mono: 'Google Sans Code', ui-monospace, monospace;
 
   /* Тени. Цвет в ките вписан значением, переменной нет. */
-  --elevation-2: 0 4px 14px rgb(0 0 0 / 0.1), 0 1px 3px rgb(0 0 0 / 0.06);
-  --elevation-3: 0 14px 36px rgb(0 0 0 / 0.1), 0 4px 8px rgb(0 0 0 / 0.06);
+  --ds-elevation-2: 0 4px 14px rgb(0 0 0 / 0.1), 0 1px 3px rgb(0 0 0 / 0.06);
+  --ds-elevation-3: 0 14px 36px rgb(0 0 0 / 0.1), 0 4px 8px rgb(0 0 0 / 0.06);
 
   /* Сетка 1440 — десктопный макет */
-  --grid-1440-columns: 12;
-  --grid-1440-margin: 32px;
-  --grid-1440-gutter: 24px;
+  --ds-grid-1440-columns: 12;
+  --ds-grid-1440-margin: 32px;
+  --ds-grid-1440-gutter: 24px;
 
   /* Сетка 360 — мобильный макет */
-  --grid-360-columns: 4;
-  --grid-360-margin: 10px;
-  --grid-360-gutter: 10px;
+  --ds-grid-360-columns: 4;
+  --ds-grid-360-margin: 10px;
+  --ds-grid-360-gutter: 10px;
+}
+
+/* Текст — меняются по режимам Desktop и Mobile */
+.ds-text-display {
+  font: 900 var(--ds-font-size-display) / var(--ds-line-height-display) var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-h1 {
+  font: 900 var(--ds-font-size-h1) / var(--ds-line-height-h1) var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-h2 {
+  font: 700 var(--ds-font-size-h2) / var(--ds-line-height-h2) var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-h3 {
+  font: 700 var(--ds-font-size-h3) / var(--ds-line-height-h3) var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-body-1 {
+  font: 400 var(--ds-font-size-body-1) / var(--ds-line-height-body-1) var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-body-2 {
+  font: 400 var(--ds-font-size-body-2) / var(--ds-line-height-body-2) var(--ds-font-family-sans);
+  letter-spacing: 0.005em;
+}
+.ds-text-decor-mono {
+  font: 400 var(--ds-font-size-decor-mono) / var(--ds-line-height-decor-mono) var(--ds-font-family-mono);
+  letter-spacing: 0;
+}
+
+/* Текст — одни на оба режима */
+.ds-text-control-l {
+  font: 400 17px / 24px var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-control-m {
+  font: 400 13px / 18px var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-control-s {
+  font: 400 11px / 16px var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-control-l-strong {
+  font: 600 17px / 24px var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-control-m-strong {
+  font: 600 13px / 18px var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-control-s-strong {
+  font: 600 11px / 16px var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-small {
+  font: 500 13px / 16px var(--ds-font-family-sans);
+  letter-spacing: 0;
+}
+.ds-text-subhead {
+  font: 500 17px / 24px var(--ds-font-family-sans);
+  letter-spacing: 0;
 }
