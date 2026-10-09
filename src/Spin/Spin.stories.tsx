@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Spin, type SpinSize } from './Spin'
 
 const meta = {
-  title: 'Spin',
+  title: 'Components/Spin',
   component: Spin,
   args: { size: 'xs' },
   // На странице с разложенными вариантами панель не нужна; у Playground она своя.

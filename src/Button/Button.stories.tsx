@@ -4,7 +4,7 @@ import type { CSSProperties, ReactNode } from 'react'
 import { Button, type ButtonProps, type ButtonSize, type ButtonView } from './Button'
 
 const meta = {
-  title: 'Button',
+  title: 'Base UI/Button',
   component: Button,
   args: { view: 'primary-brand', size: 'xl', children: 'Content' },
   // На страницах с разложенными вариантами панель не нужна; у Playground она своя.

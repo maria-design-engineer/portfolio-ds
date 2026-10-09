@@ -4,7 +4,7 @@ import type { CSSProperties, ReactNode } from 'react'
 import { TextInput, type TextInputProps, type TextInputSize } from './TextInput'
 
 const meta = {
-  title: 'TextInput',
+  title: 'Base UI/TextInput',
   component: TextInput,
   args: { size: 'xl', defaultValue: 'Content' },
   // На страницах с разложенными вариантами панель не нужна; у Playground она своя.

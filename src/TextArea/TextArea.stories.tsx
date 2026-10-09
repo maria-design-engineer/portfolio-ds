@@ -4,7 +4,7 @@ import type { CSSProperties, ReactNode } from 'react'
 import { TextArea, type TextAreaProps, type TextAreaSize } from './TextArea'
 
 const meta = {
-  title: 'TextArea',
+  title: 'Base UI/TextArea',
   component: TextArea,
   args: { size: 'xl', defaultValue: 'Content' },
   // На страницах с разложенными вариантами панель не нужна; у Playground она своя.

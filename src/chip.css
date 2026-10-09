@@ -1,0 +1,63 @@
+/*
+ * Chip. Источник — набор кита 149:709: 26 вариантов.
+ * Цвета привязаны к Primitive напрямую, как в ките. Под прозрачным тинтом лежит белый: чип не просвечивает на картинке.
+ */
+
+.ds-chip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: var(--ds-radius-full);
+  background: linear-gradient(var(--ds-chip-tint), var(--ds-chip-tint)), var(--ds-color-bg-default);
+  color: var(--ds-chip-text);
+  white-space: nowrap;
+}
+
+/* Размеры */
+.ds-chip[data-size='m'] {
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px;
+}
+.ds-chip[data-size='s'] {
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+}
+
+/* Цвета: тинт · сплошной и обводка · текст и иконка */
+.ds-chip[data-color='blue'] {
+  --ds-chip-tint: var(--ds-blue-tint-chip);
+  --ds-chip-solid: var(--ds-blue-500);
+  --ds-chip-text: var(--ds-blue-dark);
+}
+.ds-chip[data-color='green'] {
+  --ds-chip-tint: var(--ds-green-tint-chip);
+  --ds-chip-solid: var(--ds-green-500);
+  --ds-chip-text: var(--ds-green-dark);
+}
+.ds-chip[data-color='teal'] {
+  --ds-chip-tint: var(--ds-teal-tint-chip);
+  --ds-chip-solid: var(--ds-teal-500);
+  --ds-chip-text: var(--ds-teal-dark);
+}
+.ds-chip[data-color='orange'] {
+  --ds-chip-tint: var(--ds-orange-tint-chip);
+  --ds-chip-solid: var(--ds-orange-fill);
+  --ds-chip-text: var(--ds-orange-text);
+}
+/* neutral — сплошной серый, без тинта поверх белого */
+.ds-chip[data-color='neutral'] {
+  background: var(--ds-line-50);
+  color: var(--ds-color-fg-primary);
+}
+
+/* Виды */
+.ds-chip[data-variant='stroke'] {
+  box-shadow: inset 0 0 0 1px var(--ds-chip-solid);
+}
+.ds-chip[data-variant='fill'] {
+  background: var(--ds-chip-solid);
+  color: var(--ds-white);
+}
