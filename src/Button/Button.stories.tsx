@@ -209,3 +209,26 @@ export const States: Story = {
     </div>
   ),
 }
+
+// Класс страницы перебивает стиль библиотеки: стили пакета лежат в слое `ds`, класс страницы — вне слоя.
+// Пример из макетов: у текстовой кнопки `Flat-action` сняты боковые поля.
+export const PageClass: Story = {
+  name: 'Класс страницы',
+  render: () => (
+    <div style={row}>
+      <style>{'.page-px-0 { padding-left: 0; padding-right: 0; }'}</style>
+      <Card name="View=Flat-action — как в библиотеке">
+        <div style={{ outline: '1px dashed var(--ds-color-fg-border)' }}>
+          <Button view="flat-action">Content</Button>
+        </div>
+      </Card>
+      <Card name='className="page-px-0" — боковые поля сняты'>
+        <div style={{ outline: '1px dashed var(--ds-color-fg-border)' }}>
+          <Button view="flat-action" className="page-px-0">
+            Content
+          </Button>
+        </div>
+      </Card>
+    </div>
+  ),
+}

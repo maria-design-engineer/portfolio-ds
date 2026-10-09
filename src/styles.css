@@ -1,13 +1,17 @@
-/* Стили библиотеки. Один файл на пакет. */
-@import './tokens.css';
+/*
+ * Стили библиотеки. Один файл на пакет.
+ * Всё, кроме шрифтов, лежит в слое `ds`: класс страницы, переданный в className, перебивает стиль
+ * библиотеки без !important. Порядок слоёв объявляет сайт — см. README, «Слой стилей».
+ */
 @import './fonts.css';
-@import './kit-styles.css';
-@import './field.css';
-@import './spin.css';
-@import './button.css';
-@import './chip.css';
-@import './why-point.css';
-@import './case-card.css';
+@import './tokens.css' layer(ds);
+@import './kit-styles.css' layer(ds);
+@import './field.css' layer(ds);
+@import './spin.css' layer(ds);
+@import './button.css' layer(ds);
+@import './chip.css' layer(ds);
+@import './why-point.css' layer(ds);
+@import './case-card.css' layer(ds);
 
 .ds-probe {
   display: inline-block;
