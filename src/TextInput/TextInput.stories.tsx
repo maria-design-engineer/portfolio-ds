@@ -53,8 +53,13 @@ function Card({ name, children }: { name: string; children: ReactNode }) {
   )
 }
 
+// key пересоздаёт поле, когда в Controls меняют defaultValue: иначе браузер держит прежний текст.
 export const Playground: Story = {
-  decorators: [(Story) => <div style={{ width: 340 }}><Story /></div>],
+  render: (args) => (
+    <div style={{ width: 340 }}>
+      <TextInput key={String(args.defaultValue)} {...args} />
+    </div>
+  ),
 }
 
 export const Sizes: Story = {
