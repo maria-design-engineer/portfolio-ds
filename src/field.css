@@ -262,6 +262,15 @@
   color: var(--ds-color-fg-disabled);
   cursor: default;
 }
+/* Safari красит текст выключенного поля своим серым и делает его полупрозрачным: задаём цвет явно. */
+.ds-field__control:disabled {
+  color: var(--ds-color-fg-disabled);
+  -webkit-text-fill-color: var(--ds-color-fg-disabled);
+  opacity: 1;
+}
+.ds-field__control:disabled::placeholder {
+  -webkit-text-fill-color: var(--ds-color-fg-disabled);
+}
 .ds-field[data-disabled] .ds-field__right,
 .ds-field[data-disabled] .ds-field__left > .ds-icon,
 .ds-field[data-disabled] .ds-field__label {

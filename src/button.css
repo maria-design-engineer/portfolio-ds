@@ -193,17 +193,18 @@
 /*
  * Нажатие: кнопка уменьшается на 3% и возвращается, место вокруг не сдвигается.
  * Только указателем: нажатие пробелом или Enter не анимируется — commons/motion.md.
+ * Правило живёт только там, где движение не уменьшено: при «уменьшить движение» его нет вовсе,
+ * перебивать нечего.
  */
 
-.ds-button:active:not(:focus-visible, [data-loading], [data-off]) {
-  transform: scale(0.97);
+@media (prefers-reduced-motion: no-preference) {
+  .ds-button:active:not(:focus-visible, [data-loading], [data-off]) {
+    transform: scale(0.97);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .ds-button {
     transition: none;
-  }
-  .ds-button:active {
-    transform: none;
   }
 }

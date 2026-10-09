@@ -5,7 +5,7 @@ import { renderToString } from 'react-dom/server'
 import { readFileSync } from 'node:fs'
 import { Form } from '@base-ui/react/form'
 
-const { TextInput, TextArea, Button, Spin } = await import(new URL('./dist/ds.js', import.meta.url).href)
+const { TextInput, TextArea, Button, Spin, WhyPoint, CaseCard } = await import(new URL('./dist/ds.js', import.meta.url).href)
 
 let passed = 0
 let failed = 0
@@ -53,6 +53,36 @@ check('Spin с подписью: имя лежит текстом внутри �
 check('Spin с подписью: область не скрыта от скринридера', 'нет', has(labelled.match(/<span[^>]*>/)[0], /aria-hidden/))
 check('Spin без подписи: скрыт от скринридера', 'да', has(renderToString(h(Spin, {})).match(/<span[^>]*>/)[0], /aria-hidden="true"/))
 
+// --- Подпись поля читается скринридером
+const withLabel = renderToString(h(TextInput, { label: 'Email:' }))
+const labelFor = (withLabel.match(/<label[^>]*for="([^"]+)"[^>]*>Email:<\/label>/) || [])[1]
+const inputId = (withLabel.match(/<input[^>]*id="([^"]+)"/) || [])[1]
+check('TextInput с label: подпись — метка поля', 'да', labelFor ? 'да' : 'нет')
+check('TextInput с label: метка связана с этим полем', 'да', labelFor && labelFor === inputId ? 'да' : 'нет')
+
+// --- WhyPoint: разметку выбора задаёт страница
+const point = (props) => renderToString(h(WhyPoint, props, 'текст')).match(/<button[^>]*>/)[0]
+check('WhyPoint: сам по себе — нажатая кнопка', 'aria-pressed="true"', (point({ selected: true }).match(/aria-pressed="[a-z]+"/) || ['нет'])[0])
+check('WhyPoint с role="tab" от страницы — aria-pressed нет', 'нет', has(point({ selected: true, role: 'tab', 'aria-selected': true }), /aria-pressed/))
+check('WhyPoint с role="tab" от страницы — aria-selected дошёл', 'да', has(point({ selected: true, role: 'tab', 'aria-selected': true }), /role="tab"[^>]*aria-selected="true"|aria-selected="true"[^>]*role="tab"/))
+check('WhyPoint: aria-pressed страницы старше своего', 'aria-pressed="false"', (point({ selected: true, 'aria-pressed': false }).match(/aria-pressed="[a-z]+"/) || ['нет'])[0])
+
+// --- CaseCard: корень подставляет страница
+const card = (props) => renderToString(h(CaseCard, { title: 'T', teaser: 'D', ...props })).match(/^<[a-z]+[^>]*>/)[0]
+check('CaseCard без href — корень article', 'article', card({}).match(/^<([a-z]+)/)[1])
+check('CaseCard с href — корень a', 'a', card({ href: '/x' }).match(/^<([a-z]+)/)[1])
+const site = card({ render: h('a', { 'data-site-link': 'yes', href: '/cases/x' }), target: '_blank', rel: 'noreferrer', 'aria-label': 'Кейс' })
+check('CaseCard с render — корень — элемент страницы', 'да', has(site, /data-site-link="yes"/))
+check('CaseCard с render — target страницы дошёл до корня', 'да', has(site, /target="_blank"/))
+check('CaseCard с render — rel и aria-label дошли', 'да', has(site, /rel="noreferrer"/) === 'да' && has(site, /aria-label="Кейс"/) === 'да' ? 'да' : 'нет')
+check('CaseCard с render — класс карточки на месте', 'да', has(site, /class="[^"]*ds-case-card/))
+
+// --- Витрина: неразрывные пробелы и подключённые иконки
+const { nbsp } = await import(new URL('./src/showcase/text.stories.helpers.ts', import.meta.url).href)
+check('nbsp: после каждого короткого слова', 'Скажу и⍽в⍽двух словах, а⍽не⍽в⍽трёх', nbsp('Скажу и в двух словах, а не в трёх').replaceAll(String.fromCharCode(160), '⍽'))
+const table = readFileSync(new URL('./src/icons/Icon.tsx', import.meta.url), 'utf8').match(/const icons = \{([\s\S]*?)\n\} satisfies/)[1]
+check('Иконок в таблице библиотеки', '12', String((table.match(/^  ['a-z-]+: \{/gm) || []).length))
+
 // --- Пакет
 const js = readFileSync(new URL('./dist/ds.js', import.meta.url), 'utf8')
 const css = readFileSync(new URL('./dist/ds.css', import.meta.url), 'utf8')
@@ -61,6 +91,20 @@ check('Пакет: пометка use client первой строкой', 'да
 check('Пакет: стили в слое ds', 'да', has(css, /@layer ds\{/))
 check('Пакет: пробного компонента Probe нет', 'нет', has(types + js, /Probe/))
 check('Пакет: нажатие клавишей не анимируется', 'да', has(css, /\.ds-button:active:not\(:focus-visible/))
+// «Уменьшить движение»: правило нажатия стоит только внутри no-preference — при reduce его нет, перебивать нечего.
+const pressRules = [...css.matchAll(/transform:scale\([^)]*\)/g)].map((m) => m.index)
+// Границы блоков @media с данным условием: от открывающей скобки до парной закрывающей.
+const blocks = (condition) =>
+  [...css.matchAll(new RegExp(`@media \\(prefers-reduced-motion:${condition}\\)\\{`, 'g'))].map((m) => {
+    let depth = 0, i = m.index + m[0].length - 1
+    for (; i < css.length; i++) { if (css[i] === '{') depth++; if (css[i] === '}' && --depth === 0) break }
+    return [m.index, i]
+  })
+const calm = blocks('no-preference')
+const outside = pressRules.filter((at) => !calm.some(([from, to]) => at > from && at < to))
+check('Button: правил уменьшения при нажатии всего', '1', String(pressRules.length))
+check('Button: правил уменьшения вне «движение не уменьшено»', '0', String(outside.length))
+check('Button: при «уменьшить движение» правил с transform нет', 'нет', has(blocks('reduce').map(([from, to]) => css.slice(from, to)).join(''), /transform/))
 
 console.log(`\nИтог: пройдено ${passed}, провалено ${failed}`)
 process.exit(failed ? 1 : 0)

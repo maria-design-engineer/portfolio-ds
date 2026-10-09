@@ -101,7 +101,8 @@ export function TextInput({
       <div className={`ds-field__box ds-text-${text}`} onClick={(event) => !(event.target as Element).closest('button') && control.current?.focus()}>
         <span className="ds-field__left">
           {startIcon ? <Icon name="search" size={icon} /> : null}
-          {label ? <span className={`ds-field__label ds-text-${text}-strong`}>{label}</span> : null}
+          {/* Подпись — настоящая метка поля: скринридер читает её как имя поля. */}
+          {label ? <Field.Label className={`ds-field__label ds-text-${text}-strong`}>{label}</Field.Label> : null}
           <Field.Control className="ds-field__control" {...input} ref={setControl} />
         </span>
         {hasRight ? (

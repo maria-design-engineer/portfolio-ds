@@ -43,6 +43,8 @@ export type IconName = keyof typeof icons
 export const iconList = Object.entries(icons).map(([name, sizes]) => ({
   name: name as IconName,
   sizes: Object.keys(sizes).map(Number) as IconSize[],
+  // Сами контуры: по ним страница узнаёт подключённую иконку, из какого бы размера файла её ни взяли.
+  svgs: Object.values(sizes) as string[],
 }))
 export type IconSize = 12 | 16
 

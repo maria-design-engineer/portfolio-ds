@@ -30,14 +30,9 @@ const entries: Entry[] = Object.entries(files).flatMap(([path, svg]) => {
   return match ? [{ name: match[1], size: Number(match[2]), theme: match[3] as Theme, svg }] : []
 })
 
-// Подключённые в библиотеку: имя в коде «dismiss-regular» ↔ файл «dismiss_…_regular».
-const connected = new Set(
-  iconList.flatMap(({ name, sizes }) => {
-    const theme: Theme = name.endsWith('-regular') ? 'regular' : 'filled'
-    const file = name.replace(/-regular$/, '').replace(/-/g, '_')
-    return sizes.map((size) => `${file}_${size}_${theme}`)
-  }),
-)
+// Подключённые в библиотеку — по самому контуру: иконка помечена, из какого бы размера файла её ни взяли.
+// У `circle-small` и `form-multiple-collection-regular` взят файл 20 и ужат до 16.
+const connected = new Set(iconList.flatMap(({ svgs }) => svgs))
 const codeName = (entry: Entry) => entry.name.replace(/_/g, '-') + (entry.theme === 'regular' ? '-regular' : '')
 
 const LIMIT = 600
@@ -56,7 +51,7 @@ const input: CSSProperties = {
   color: 'inherit',
 }
 const grid: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(132px, 1fr))', gap: 8 }
-const tile: CSSProperties = {
+const tile_: CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -90,13 +85,20 @@ function IconsPage() {
 
   const found = useMemo(() => {
     const words = query.toLowerCase().trim().split(/[\s_-]+/).filter(Boolean)
-    return entries.filter(
-      (entry) =>
-        entry.size === size &&
-        entry.theme === theme &&
-        words.every((word) => entry.name.includes(word)) &&
-        (!onlyConnected || connected.has(`${entry.name}_${entry.size}_${entry.theme}`)),
-    )
+    // «Только подключённые» — таблица библиотеки: по плитке на иконку, без фильтра размера и темы.
+    if (onlyConnected)
+      return iconList
+        .filter(({ name }) => words.every((word) => name.includes(word)))
+        .map(({ name, sizes, svgs }) => ({ key: name, label: `${name} · ${sizes.join(', ')}`, size: 16, svg: svgs[svgs.length - 1], marked: true }))
+    return entries
+      .filter((entry) => entry.size === size && entry.theme === theme && words.every((word) => entry.name.includes(word)))
+      .map((entry) => ({
+        key: `${entry.name}-${entry.size}-${entry.theme}`,
+        label: codeName(entry),
+        size: entry.size,
+        svg: entry.svg,
+        marked: connected.has(entry.svg),
+      }))
   }, [query, size, theme, onlyConnected])
 
   return (
@@ -118,26 +120,25 @@ function IconsPage() {
         </label>
       </div>
       <p style={{ margin: '0 0 16px', color: 'var(--ds-color-fg-secondary)' }}>
-        Найдено: {found.length}
+        {onlyConnected ? `Подключено иконок: ${found.length}` : `Найдено: ${found.length}`}
         {found.length > LIMIT ? ` · показаны первые ${LIMIT}, уточни поиск` : ''}
       </p>
+      <style>{'.showcase-icon svg { display: block; width: 100%; height: 100%; }'}</style>
       <div style={grid}>
-        {found.slice(0, LIMIT).map((entry) => {
-          const isConnected = connected.has(`${entry.name}_${entry.size}_${entry.theme}`)
-          return (
-            <div
-              key={`${entry.name}-${entry.size}-${entry.theme}`}
-              className="ds-text-control-s"
-              style={{ ...tile, borderColor: isConnected ? 'var(--ds-color-fg-focus)' : undefined }}
-            >
-              <span
-                style={{ display: 'block', width: entry.size, height: entry.size, fill: 'currentColor' }}
-                dangerouslySetInnerHTML={{ __html: entry.svg }}
-              />
-              <span style={{ color: 'var(--ds-color-fg-secondary)' }}>{codeName(entry)}</span>
-            </div>
-          )
-        })}
+        {found.slice(0, LIMIT).map((tile) => (
+          <div
+            key={tile.key}
+            className="ds-text-control-s"
+            style={{ ...tile_, borderColor: tile.marked ? 'var(--ds-color-fg-focus)' : undefined }}
+          >
+            <span
+              className="showcase-icon"
+              style={{ display: 'block', width: tile.size, height: tile.size, fill: 'currentColor' }}
+              dangerouslySetInnerHTML={{ __html: tile.svg }}
+            />
+            <span style={{ color: 'var(--ds-color-fg-secondary)' }}>{tile.label}</span>
+          </div>
+        ))}
       </div>
     </div>
   )

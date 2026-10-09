@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react'
+import { useRender } from '@base-ui/react/use-render'
+import type { ComponentPropsWithRef, ReactNode } from 'react'
 
 import { Chip, type ChipColor, type ChipStartIcon } from '../Chip/Chip'
 
@@ -7,7 +8,7 @@ export type CaseCardDevice = 'desktop' | 'mobile'
 /** Тег под картинкой. В ките — чипы `tag 1` … `tag 4`: `Default` + `tint`, цвет по смыслу тега. */
 export type CaseCardTag = { label: string; color?: Exclude<ChipColor, 'neutral' | 'orange'>; icon?: ChipStartIcon }
 
-export type CaseCardProps = {
+export type CaseCardProps = Omit<ComponentPropsWithRef<'a'>, 'title' | 'children' | 'className' | 'style'> & {
   /** Раскладка: `desktop` на макете 1440, `mobile` на макете 360. В ките — ось `device`. */
   device?: CaseCardDevice
   /** Заголовок. В ките — `title`. */
@@ -24,8 +25,11 @@ export type CaseCardProps = {
   domain?: string
   /** Теги, до четырёх. В ките — `tag 1` … `tag 4`. */
   tags?: CaseCardTag[]
-  /** Адрес кейса: с ним карточка — ссылка. */
-  href?: string
+  /**
+   * Свой корневой элемент — как у компонентов на Base UI: `render={<Link href="/cases/x" />}`.
+   * Без него корень — `a` при `href` и `article` без него.
+   */
+  render?: useRender.RenderProp
   className?: string
   /** Только для витрины: показать `hover` карточкой, без мыши. */
   'data-ds-state'?: 'hover'
@@ -41,19 +45,14 @@ export function CaseCard({
   statusIcon,
   domain,
   tags = [],
-  href,
+  render,
+  ref,
   className,
-  'data-ds-state': dsState,
+  ...root
 }: CaseCardProps) {
   const chip = device === 'desktop' ? 'm' : 's'
-  const Root = href ? 'a' : 'article'
-  return (
-    <Root
-      href={href}
-      className={['ds-case-card', className].filter(Boolean).join(' ')}
-      data-device={device}
-      data-ds-state={dsState}
-    >
+  const children = (
+    <>
       <div className="ds-case-card__media">
         {media}
         <div className="ds-case-card__badges">
@@ -82,6 +81,13 @@ export function CaseCard({
           <p className="ds-case-card__teaser ds-text-body-2">{teaser}</p>
         </div>
       </div>
-    </Root>
+    </>
   )
+  // Остальные пропы страницы — `href`, `target`, `rel`, `onClick`, `aria-*` — и `ref` уходят в корень.
+  return useRender({
+    render,
+    ref,
+    defaultTagName: root.href ? 'a' : 'article',
+    props: { ...root, className: ['ds-case-card', className].filter(Boolean).join(' '), 'data-device': device, children },
+  })
 }

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import type { CSSProperties, ReactNode } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 
 import { nbsp } from '../showcase/text.stories.helpers'
 import { CaseCard, type CaseCardDevice, type CaseCardProps, type CaseCardTag } from './CaseCard'
@@ -135,3 +135,36 @@ export const States: Story = {
     </div>
   ),
 }
+
+// Сайт подставляет в корень карточки свой элемент ссылки — на Next это `Link` — и свои пропы.
+// Здесь вместо `Link` стоит обычная ссылка с пометкой: видно, что корень — элемент страницы.
+function SiteLinkDemo() {
+  const ref = useRef<HTMLAnchorElement>(null)
+  const [report, setReport] = useState('—')
+  useEffect(() => {
+    const node = ref.current
+    setReport(
+      node
+        ? `ref → <${node.tagName.toLowerCase()}> · data-site-link="${node.dataset.siteLink}" · target="${node.target}" · rel="${node.rel}" · класс карточки: ${node.classList.contains('ds-case-card') ? 'есть' : 'нет'}`
+        : 'ref пуст',
+    )
+  }, [])
+  return (
+    <div style={stage}>
+      <div className="ds-text-control-m" style={{ ...caption, marginBottom: 16 }}>
+        {report}
+      </div>
+      <Framed device="desktop">
+        <CaseCard
+          {...master('desktop')}
+          ref={ref}
+          render={<a data-site-link="yes" href="#case" />}
+          target="_blank"
+          rel="noreferrer"
+        />
+      </Framed>
+    </div>
+  )
+}
+
+export const SiteLink: Story = { name: 'Ссылка сайта', render: () => <SiteLinkDemo /> }

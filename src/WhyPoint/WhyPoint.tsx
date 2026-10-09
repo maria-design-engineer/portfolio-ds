@@ -52,12 +52,14 @@ export type WhyPointProps = Omit<ComponentProps<'button'>, 'className' | 'style'
 export function WhyPoint({ view = 'list', selected = false, type = 'button', children, className, ...button }: WhyPointProps) {
   return (
     <button
+      // Своя разметка выбора — «нажатая кнопка». Страница, которая собирает из пунктов вкладки,
+      // передаёт свою роль: тогда aria-pressed не ставится. Пропы страницы идут следом и старше своих.
+      aria-pressed={button.role && button.role !== 'button' ? undefined : selected}
       {...button}
       type={type}
       className={['ds-why-point', className].filter(Boolean).join(' ')}
       data-view={view}
       data-selected={selected ? '' : undefined}
-      aria-pressed={selected}
     >
       <span className="ds-why-point__check" aria-hidden="true">
         <Check />
