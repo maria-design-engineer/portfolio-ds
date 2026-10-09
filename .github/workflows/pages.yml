@@ -57,3 +57,48 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5.0.1
+
+  # Пакет для сайта: архив npm pack прикладывается к релизу GitHub с номером тега.
+  # Сайт ставит собранный пакет по адресу архива, исходники библиотеки ему не нужны.
+  release:
+    runs-on: ubuntu-24.04
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+
+      - name: Node
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24.16.0
+
+      - name: Install
+        run: npm ci
+
+      # Номер в package.json обязан совпадать с тегом: иначе архив назовётся
+      # не тем номером, и сайт поставит не тот релиз.
+      - name: Version matches tag
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "package.json: $PKG_VERSION, тег: $GITHUB_REF_NAME — номера расходятся"
+            exit 1
+          fi
+
+      - name: Build package
+        run: npm run build
+
+      - name: Pack
+        run: npm pack
+
+      # gh приезжает с образом ubuntu-24.04, отдельной версии у шага нет.
+      - name: Attach archive to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 \
+            || gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes "Пакет ds $GITHUB_REF_NAME: архив для npm install по адресу ниже."
+          gh release upload "$GITHUB_REF_NAME" ds-*.tgz --clobber
