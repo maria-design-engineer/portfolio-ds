@@ -1,0 +1,8 @@
+/* Стили библиотеки. Один файл на пакет. */
+.ds-probe {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font: 14px/20px system-ui, sans-serif;
+}
