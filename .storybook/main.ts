@@ -5,6 +5,8 @@ const config: StorybookConfig = {
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
   "addons": [],
+  // Тексты лицензий шрифтов едут в витрину вместе с самими шрифтами.
+  "staticDirs": ["../public"],
   "framework": "@storybook/react-vite"
 };
 export default config;

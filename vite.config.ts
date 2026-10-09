@@ -12,7 +12,8 @@ export default defineConfig({
       cssFileName: 'ds',
     },
     cssCodeSplit: false,
-    copyPublicDir: false,
+    // В public/ лежат только тексты лицензий шрифтов: OFL требует прикладывать их к каждой копии.
+    copyPublicDir: true,
     rolldownOptions: {
       // React и Base UI — внешние: их ставит приложение, в пакет они не едут.
       external: [/^react($|\/)/, /^react-dom($|\/)/, /^@base-ui\/react($|\/)/],
