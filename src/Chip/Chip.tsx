@@ -6,7 +6,18 @@ export type ChipColor = 'neutral' | 'blue' | 'green' | 'teal' | 'orange'
 export type ChipVariant = 'tint' | 'stroke' | 'fill'
 export type ChipSize = 'm' | 's'
 /** Иконка слева — 16. */
-export type ChipStartIcon = 'brightness-low-regular' | 'chevron-down' | 'dismiss' | 'edit' | 'eye' | 'search' | 'warning'
+export type ChipStartIcon =
+  | 'apps-regular'
+  | 'brightness-low-regular'
+  | 'circle-small'
+  | 'design-ideas-regular'
+  | 'form-multiple-collection-regular'
+  | 'chevron-down'
+  | 'dismiss'
+  | 'edit'
+  | 'eye'
+  | 'search'
+  | 'warning'
 /** Иконка справа — 12. */
 export type ChipEndIcon = 'dismiss-regular' | 'chevron-down' | 'dismiss' | 'edit' | 'eye' | 'search' | 'warning'
 

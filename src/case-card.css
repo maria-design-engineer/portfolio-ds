@@ -1,0 +1,133 @@
+/*
+ * CaseCard. Источник — набор кита Product / case-card, 857:7546: 3 варианта.
+ * Атрибут data-ds-state — только для витрины: показать hover карточкой, без мыши.
+ */
+
+.ds-case-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--ds-color-bg-default);
+  color: var(--ds-color-fg-primary);
+  text-decoration: none;
+}
+/* Обводка 1 px внутрь, поверх содержимого — как обводка рамки в Figma. */
+.ds-case-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--ds-color-bg-subtle);
+  pointer-events: none;
+}
+.ds-case-card:focus-visible {
+  outline: 2px solid var(--ds-color-fg-focus);
+  outline-offset: 1px;
+}
+
+.ds-case-card__media {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  background: var(--ds-color-bg-subtle);
+}
+/* Картинка страницы заполняет область и остаётся по центру. */
+.ds-case-card__media > :not(.ds-case-card__badges) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.ds-case-card__badges {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.ds-case-card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.ds-case-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+.ds-case-card__heading {
+  display: flex;
+  flex-direction: column;
+}
+.ds-case-card__title,
+.ds-case-card__teaser {
+  margin: 0;
+}
+.ds-case-card__title {
+  color: var(--ds-color-fg-primary);
+}
+.ds-case-card__teaser {
+  color: var(--ds-color-fg-secondary);
+}
+
+/* device=desktop */
+
+.ds-case-card[data-device='desktop'] {
+  border-radius: var(--ds-radius-block-48);
+}
+.ds-case-card[data-device='desktop'] .ds-case-card__media {
+  height: 360px;
+  border-radius: var(--ds-radius-block-48);
+}
+.ds-case-card[data-device='desktop'] .ds-case-card__badges {
+  padding: var(--ds-space-24);
+}
+.ds-case-card[data-device='desktop'] .ds-case-card__content {
+  gap: var(--ds-space-24);
+  padding: var(--ds-space-24) var(--ds-space-40);
+}
+/* Между тегами 10 — в десктопной шкале space такого значения нет; между рядами 8. */
+.ds-case-card[data-device='desktop'] .ds-case-card__tags {
+  gap: var(--ds-space-8) 10px;
+}
+.ds-case-card[data-device='desktop'] .ds-case-card__heading {
+  gap: var(--ds-space-8);
+}
+
+/* state=hover — та же карточка с тенью; только десктоп и только мышью */
+
+.ds-case-card[data-device='desktop'][data-ds-state='hover'] {
+  box-shadow: var(--ds-elevation-2);
+}
+@media (hover: hover) {
+  .ds-case-card[data-device='desktop']:hover {
+    box-shadow: var(--ds-elevation-2);
+  }
+}
+
+/* device=mobile */
+
+.ds-case-card[data-device='mobile'] {
+  border-radius: var(--ds-radius-mobile-20);
+}
+.ds-case-card[data-device='mobile'] .ds-case-card__media {
+  height: 273px;
+  border-radius: var(--ds-radius-mobile-20);
+}
+.ds-case-card[data-device='mobile'] .ds-case-card__badges {
+  padding: var(--ds-space-mobile-10);
+}
+.ds-case-card[data-device='mobile'] .ds-case-card__content {
+  gap: var(--ds-space-mobile-10);
+  padding: var(--ds-space-mobile-20) var(--ds-space-mobile-10);
+}
+.ds-case-card[data-device='mobile'] .ds-case-card__tags {
+  gap: var(--ds-space-8) var(--ds-space-mobile-10);
+}
+.ds-case-card[data-device='mobile'] .ds-case-card__heading {
+  gap: var(--ds-space-mobile-5);
+}

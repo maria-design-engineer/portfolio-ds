@@ -1,9 +1,12 @@
 // Иконки библиотеки. Контуры — пакет @fluentui/svg-icons: в собранный пакет попадают только названные здесь.
 // Лицензия набора — MIT, текст лежит в public/licenses/ и едет в пакет и в витрину.
 // Наружу компонент не выходит: иконки живут внутри полей и кнопки, имя набора в сайт не едет.
+import apps16Regular from '@fluentui/svg-icons/icons/apps_16_regular.svg?raw'
 import brightnessLow16Regular from '@fluentui/svg-icons/icons/brightness_low_16_regular.svg?raw'
 import chevronDown12 from '@fluentui/svg-icons/icons/chevron_down_12_filled.svg?raw'
 import chevronDown16 from '@fluentui/svg-icons/icons/chevron_down_16_filled.svg?raw'
+import circleSmall20 from '@fluentui/svg-icons/icons/circle_small_20_filled.svg?raw'
+import designIdeas16Regular from '@fluentui/svg-icons/icons/design_ideas_16_regular.svg?raw'
 import dismiss12 from '@fluentui/svg-icons/icons/dismiss_12_filled.svg?raw'
 import dismiss12Regular from '@fluentui/svg-icons/icons/dismiss_12_regular.svg?raw'
 import dismiss16 from '@fluentui/svg-icons/icons/dismiss_16_filled.svg?raw'
@@ -11,14 +14,20 @@ import edit12 from '@fluentui/svg-icons/icons/edit_12_filled.svg?raw'
 import edit16 from '@fluentui/svg-icons/icons/edit_16_filled.svg?raw'
 import eye12 from '@fluentui/svg-icons/icons/eye_12_filled.svg?raw'
 import eye16 from '@fluentui/svg-icons/icons/eye_16_filled.svg?raw'
+import formMultipleCollection20Regular from '@fluentui/svg-icons/icons/form_multiple_collection_20_regular.svg?raw'
 import search12 from '@fluentui/svg-icons/icons/search_12_filled.svg?raw'
 import search16 from '@fluentui/svg-icons/icons/search_16_filled.svg?raw'
 import warning12 from '@fluentui/svg-icons/icons/warning_12_filled.svg?raw'
 import warning16 from '@fluentui/svg-icons/icons/warning_16_filled.svg?raw'
 
 // Тема Filled — поля и кнопка; тема Regular — чип: так стоит в наборах кита. Размер есть не у каждой иконки.
+// У `circle-small` и `form-multiple-collection-regular` размера 16 в наборе нет: взят 20 и ужат до 16, как в ките.
 const icons = {
+  'apps-regular': { 16: apps16Regular },
   'brightness-low-regular': { 16: brightnessLow16Regular },
+  'circle-small': { 16: circleSmall20 },
+  'design-ideas-regular': { 16: designIdeas16Regular },
+  'form-multiple-collection-regular': { 16: formMultipleCollection20Regular },
   'chevron-down': { 12: chevronDown12, 16: chevronDown16 },
   dismiss: { 12: dismiss12, 16: dismiss16 },
   'dismiss-regular': { 12: dismiss12Regular },
