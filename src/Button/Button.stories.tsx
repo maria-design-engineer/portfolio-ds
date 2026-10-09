@@ -232,3 +232,43 @@ export const PageClass: Story = {
     </div>
   ),
 }
+
+// Сочетания состояний: под курсором кнопка выглядит как старшее из них, спин виден.
+const combos: Record<string, Partial<ButtonProps>> = {
+  'Selected + Loading': { selected: true, loading: true },
+  'Disabled + Loading': { disabled: true, loading: true },
+  'Disabled + Selected': { disabled: true, selected: true },
+  'Selected + Hover': { selected: true, 'data-ds-state': 'hover' },
+}
+
+export const Combos: Story = {
+  name: 'Сочетания состояний',
+  render: () => (
+    <table className="ds-text-control-m" style={{ borderCollapse: 'collapse' }}>
+      <thead>
+        <tr>
+          <th style={{ ...cell, ...caption, fontWeight: 400 }} />
+          {Object.keys(views).map((name) => (
+            <th key={name} style={{ ...cell, ...caption, fontWeight: 400 }}>
+              View={name}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {Object.entries(combos).map(([combo, props]) => (
+          <tr key={combo}>
+            <td style={{ ...cell, ...caption }}>{combo}</td>
+            {Object.values(views).map((view) => (
+              <td key={view} style={cell}>
+                <Button view={view} size="l" startIcon="edit" {...props}>
+                  Content
+                </Button>
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ),
+}

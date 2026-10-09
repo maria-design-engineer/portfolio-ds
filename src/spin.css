@@ -6,8 +6,20 @@
   color: var(--ds-color-bg-brand);
   animation: ds-spin 0.8s linear infinite;
 }
+.ds-spin {
+  position: relative;
+}
 .ds-spin svg {
   display: block;
+}
+/* Подпись видит только скринридер. */
+.ds-spin__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 @keyframes ds-spin {

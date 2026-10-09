@@ -3,7 +3,10 @@ export type SpinSize = 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl'
 export type SpinProps = {
   /** Диаметр. В ките — ось `Size`. */
   size?: SpinSize
-  /** Подпись для скринридера. Без неё спин для скринридера не существует: смысл несёт то, что рядом. */
+  /**
+   * Подпись для скринридера: что сейчас происходит. Текст даёт страница — своих формулировок у библиотеки нет.
+   * Без подписи спин для скринридера не существует: смысл несёт то, что рядом.
+   */
   'aria-label'?: string
   className?: string
 }
@@ -29,12 +32,13 @@ export function Spin({ size = 'xs', 'aria-label': label, className }: SpinProps)
     <span
       className={['ds-spin', className].filter(Boolean).join(' ')}
       data-size={size}
+      // Область «статус» объявляет скринридеру свой текст, а не атрибут: подпись лежит внутри скрытым текстом.
       role={label ? 'status' : undefined}
-      aria-label={label}
       aria-hidden={label ? undefined : true}
       style={{ width: diameter, height: diameter }}
     >
-      <svg viewBox={`0 0 ${diameter} ${diameter}`} width={diameter} height={diameter}>
+      {label ? <span className="ds-spin__label">{label}</span> : null}
+      <svg aria-hidden="true" viewBox={`0 0 ${diameter} ${diameter}`} width={diameter} height={diameter}>
         <circle
           cx={diameter / 2}
           cy={diameter / 2}

@@ -120,18 +120,23 @@
   color: var(--ds-color-fg-secondary);
 }
 
-/* Hover — только мышью: на тач-экране касание даёт ложное наведение */
+/*
+ * Старшинство состояний: Disabled → Loading → Selected → Hover → Default.
+ * Любое сочетание под курсором выглядит как старшее из состояний.
+ */
+
+/* Hover — только мышью, и только у кнопки без Selected, Loading и Disabled */
 
 @media (hover: hover) {
-  .ds-button[data-view='primary-brand']:hover {
+  .ds-button[data-view='primary-brand']:hover:not([data-selected], [data-loading], [data-off]) {
     background: var(--ds-color-bg-brand-hover);
   }
-  .ds-button[data-view='outlined-action']:hover {
+  .ds-button[data-view='outlined-action']:hover:not([data-selected], [data-loading], [data-off]) {
     background: var(--ds-color-bg-brand-tint);
   }
-  .ds-button[data-view='flat']:hover,
-  .ds-button[data-view='flat-action']:hover,
-  .ds-button[data-view='flat-secondary']:hover {
+  .ds-button[data-view='flat']:hover:not([data-selected], [data-loading], [data-off]),
+  .ds-button[data-view='flat-action']:hover:not([data-selected], [data-loading], [data-off]),
+  .ds-button[data-view='flat-secondary']:hover:not([data-selected], [data-loading], [data-off]) {
     background: var(--ds-color-bg-neutral-hover);
   }
 }
@@ -155,16 +160,15 @@
   outline-offset: 1px;
 }
 
-/* Selected — одно у всех видов */
+/* Selected — одно у всех видов; спин в загрузке берёт его цвет текста и виден на светлом фоне */
 
-.ds-button[data-selected],
-.ds-button[data-selected]:hover {
+.ds-button[data-view][data-selected] {
   background: var(--ds-color-bg-brand-tint);
   box-shadow: none;
   color: var(--ds-color-fg-brand);
 }
 
-/* Loading — цвета как у Default; текст и иконки невидимы и держат ширину */
+/* Loading — цвета как у Default или Selected; текст и иконки невидимы и держат ширину */
 
 .ds-button[data-loading] {
   cursor: default;
@@ -172,33 +176,26 @@
 .ds-button[data-loading] .ds-button__content {
   opacity: 0;
 }
-.ds-button[data-view='primary-brand'][data-loading]:hover {
-  background: var(--ds-color-bg-brand);
-}
-.ds-button[data-view='outlined-action'][data-loading]:hover,
-.ds-button[data-view='flat'][data-loading]:hover,
-.ds-button[data-view='flat-action'][data-loading]:hover,
-.ds-button[data-view='flat-secondary'][data-loading]:hover {
-  background: none;
-}
 
-/* Disabled — текст и иконка серые; фон есть у Primary-brand и Outlined-action, обводки нет */
+/* Disabled — старше всех: текст и иконка серые; фон есть у Primary-brand и Outlined-action, обводки нет */
 
-.ds-button[data-disabled]:not([data-loading]),
-.ds-button[data-disabled]:not([data-loading]):hover {
+.ds-button[data-view][data-off] {
   background: none;
   box-shadow: none;
   color: var(--ds-color-fg-disabled);
   cursor: default;
 }
-.ds-button[data-view='primary-brand'][data-disabled]:not([data-loading]),
-.ds-button[data-view='outlined-action'][data-disabled]:not([data-loading]) {
+.ds-button[data-view='primary-brand'][data-off],
+.ds-button[data-view='outlined-action'][data-off] {
   background: var(--ds-color-bg-disabled);
 }
 
-/* Нажатие: кнопка уменьшается на 3% и возвращается, место вокруг не сдвигается */
+/*
+ * Нажатие: кнопка уменьшается на 3% и возвращается, место вокруг не сдвигается.
+ * Только указателем: нажатие пробелом или Enter не анимируется — commons/motion.md.
+ */
 
-.ds-button:active:not([data-disabled]) {
+.ds-button:active:not(:focus-visible, [data-loading], [data-off]) {
   transform: scale(0.97);
 }
 
@@ -206,7 +203,7 @@
   .ds-button {
     transition: none;
   }
-  .ds-button:active:not([data-disabled]) {
+  .ds-button:active {
     transform: none;
   }
 }

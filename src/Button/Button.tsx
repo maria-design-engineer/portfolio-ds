@@ -14,7 +14,7 @@ export type ButtonProps = Omit<ComponentProps<'button'>, 'className' | 'style' |
   view?: ButtonView
   /** Размер. В ките — ось `Size`. */
   size?: ButtonSize
-  /** Квадратная кнопка с одной иконкой — `startIcon`. В ките — ось `Icon only`. Нужен `aria-label`. */
+  /** Квадратная кнопка с одной иконкой — `startIcon`, без неё `endIcon`. В ките — ось `Icon only`. Нужен `aria-label`. */
   iconOnly?: boolean
   /** Иконка слева. В ките — опция `Start icon`. */
   startIcon?: ButtonIcon
@@ -52,26 +52,39 @@ export function Button({
   ...button
 }: ButtonProps) {
   const icon = ICON_SIZE[size]
+  const hasText = children !== undefined && children !== null && children !== false && children !== ''
+  // Кнопка не рисует пустых частей: без текста она — «только иконка», какой бы из двух иконок её ни задали.
+  const onlyIcon = iconOnly || (!hasText && Boolean(startIcon ?? endIcon))
+  const single = startIcon ?? endIcon
   return (
     <BaseButton
+      // Значения страницы для aria-pressed и aria-busy старше своих: пропы страницы идут следом.
+      aria-pressed={selected === undefined ? undefined : selected}
+      aria-busy={loading || undefined}
       {...button}
       type={type}
       className={['ds-button', `ds-text-${TEXT[size]}`, className].filter(Boolean).join(' ')}
       data-view={view}
       data-size={size}
-      data-icon-only={iconOnly ? '' : undefined}
+      data-icon-only={onlyIcon ? '' : undefined}
       data-selected={selected ? '' : undefined}
       data-loading={loading ? '' : undefined}
-      aria-pressed={selected === undefined ? undefined : selected}
-      aria-busy={loading || undefined}
+      // Свой признак выключенной кнопки: атрибут Base UI data-disabled стоит и у кнопки в загрузке.
+      data-off={disabled ? '' : undefined}
       // В загрузке кнопка не принимает нажатие, но остаётся в обходе клавиатурой: фокус с неё не слетает.
       disabled={disabled || loading}
       focusableWhenDisabled={loading && !disabled}
     >
       <span className="ds-button__content">
-        {startIcon ? <Icon name={startIcon} size={icon} /> : null}
-        {iconOnly ? null : <span className="ds-button__text">{children}</span>}
-        {endIcon && !iconOnly ? <Icon name={endIcon} size={icon} /> : null}
+        {onlyIcon ? (
+          single ? <Icon name={single} size={icon} /> : null
+        ) : (
+          <>
+            {startIcon ? <Icon name={startIcon} size={icon} /> : null}
+            {hasText ? <span className="ds-button__text">{children}</span> : null}
+            {endIcon ? <Icon name={endIcon} size={icon} /> : null}
+          </>
+        )}
       </span>
       {loading ? (
         <span className="ds-button__spin">
