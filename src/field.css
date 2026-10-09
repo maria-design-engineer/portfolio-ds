@@ -1,0 +1,289 @@
+/*
+ * Общие стили полей TextInput и TextArea. Источник — наборы кита 744:11756 и 739:6839.
+ * Состояния Disabled, Error, Active приходят атрибутами Base UI: data-disabled, data-invalid, фокус внутри поля.
+ * Атрибут data-ds-state — только для витрины: показать Hover и Active карточкой, без мыши и клавиатуры.
+ */
+
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Поле: фон, обводка 1 px внутрь, скругление. Обводка тенью — отступы считаются от края, как в ките. */
+.ds-field__box {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  background: var(--color-bg-default);
+  box-shadow: inset 0 0 0 1px var(--color-fg-border);
+  color: var(--color-fg-primary);
+  cursor: text;
+}
+
+.ds-field__left {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ds-field__right {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-fg-secondary);
+}
+
+/* Иконка: контур красится в цвет текста вокруг. */
+.ds-icon {
+  display: block;
+  flex: none;
+}
+.ds-icon svg {
+  display: block;
+  fill: currentColor;
+}
+.ds-icon[data-size='12'],
+.ds-icon[data-size='12'] svg {
+  width: 12px;
+  height: 12px;
+}
+.ds-icon[data-size='16'],
+.ds-icon[data-size='16'] svg {
+  width: 16px;
+  height: 16px;
+}
+
+.ds-field__left > .ds-icon {
+  color: var(--color-fg-secondary);
+}
+
+/* Место под иконку справа: ширина из кита, иконка по центру. */
+.ds-field__slot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+.ds-field__clear {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control-xs);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+.ds-field__clear:focus-visible {
+  outline: 2px solid var(--color-fg-focus);
+  outline-offset: 1px;
+}
+.ds-field__error-icon {
+  display: flex;
+  flex: none;
+  color: var(--color-fg-danger);
+}
+
+.ds-field__control {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+
+.ds-field__control::placeholder {
+  color: var(--color-fg-disabled);
+  opacity: 1;
+}
+
+.ds-field__label {
+  flex: none;
+  color: var(--color-fg-primary);
+}
+
+.ds-field__additional {
+  color: var(--color-fg-secondary);
+  font: var(--text-control-s);
+  white-space: nowrap;
+}
+
+.ds-field__bottom {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.ds-field__error {
+  flex: 1;
+  color: var(--color-fg-danger);
+  font: var(--text-control-m);
+}
+
+/* Размеры */
+
+.ds-field[data-size='xl'] .ds-field__box {
+  gap: 8px;
+  padding: 0 var(--space-24);
+  border-radius: var(--radius-control-xl);
+  font: var(--text-control-l);
+}
+.ds-field[data-size='l'] .ds-field__box {
+  gap: 8px;
+  padding: 0 var(--space-16);
+  border-radius: var(--radius-control-l);
+  font: var(--text-control-l);
+}
+.ds-field[data-size='m'] .ds-field__box {
+  gap: 2px;
+  padding: 0 var(--space-12);
+  border-radius: var(--radius-control-m);
+  font: var(--text-control-m);
+}
+.ds-field[data-size='s'] .ds-field__box {
+  gap: 8px;
+  padding: 0 var(--space-8);
+  border-radius: var(--radius-control-s);
+  font: var(--text-control-s);
+}
+
+.ds-field[data-size='xl'] .ds-field__label,
+.ds-field[data-size='l'] .ds-field__label {
+  font: var(--text-control-l-strong);
+}
+.ds-field[data-size='m'] .ds-field__label {
+  font: var(--text-control-m-strong);
+}
+.ds-field[data-size='s'] .ds-field__label {
+  font: var(--text-control-s-strong);
+}
+
+.ds-field[data-size='xl'] .ds-field__left,
+.ds-field[data-size='l'] .ds-field__left {
+  padding-right: 8px;
+}
+.ds-field[data-size='m'] .ds-field__left,
+.ds-field[data-size='s'] .ds-field__left {
+  padding-right: 6px;
+}
+
+.ds-field[data-size='xl'] .ds-field__right .ds-field__additional,
+.ds-field[data-size='l'] .ds-field__right .ds-field__additional {
+  padding: 0 8px;
+}
+.ds-field[data-size='m'] .ds-field__right .ds-field__additional,
+.ds-field[data-size='s'] .ds-field__right .ds-field__additional {
+  padding: 0 6px;
+}
+
+.ds-field[data-size='m'] .ds-field__right,
+.ds-field[data-size='s'] .ds-field__right {
+  gap: 2px;
+}
+.ds-field[data-size='xl'] .ds-field__slot {
+  width: 36px;
+}
+.ds-field[data-size='l'] .ds-field__slot {
+  width: 28px;
+}
+.ds-field[data-size='m'] .ds-field__slot {
+  width: 24px;
+}
+.ds-field[data-size='s'] .ds-field__slot {
+  width: 20px;
+}
+
+/* TextInput — высота по размеру */
+
+.ds-text-input[data-size='xl'] .ds-field__box {
+  height: 52px;
+}
+.ds-text-input[data-size='l'] .ds-field__box {
+  height: 42px;
+}
+.ds-text-input[data-size='m'] .ds-field__box {
+  height: 34px;
+}
+.ds-text-input[data-size='s'] .ds-field__box {
+  height: 26px;
+}
+
+/* TextArea — высота 102 во всех размерах, текст прокручивается внутри */
+
+.ds-text-area .ds-field__box {
+  align-items: stretch;
+  height: 102px;
+}
+.ds-text-area .ds-field__control {
+  resize: none;
+  overflow-y: auto;
+}
+.ds-text-area .ds-field__right {
+  align-self: flex-start;
+  min-height: 20px;
+}
+.ds-text-area .ds-field__slot {
+  width: 24px;
+}
+.ds-text-area[data-size] .ds-field__box {
+  gap: 6px;
+}
+.ds-text-area[data-size='xl'] .ds-field__box {
+  padding-block: 14px;
+}
+.ds-text-area[data-size='l'] .ds-field__box {
+  padding-block: 9px;
+}
+.ds-text-area[data-size='m'] .ds-field__box {
+  padding-block: var(--space-8);
+}
+.ds-text-area[data-size='s'] .ds-field__box {
+  padding-block: 5px;
+}
+.ds-text-area .ds-field__bottom .ds-field__additional {
+  margin-left: auto;
+  font: var(--text-control-m);
+}
+.ds-text-area[data-size='s'] .ds-field__bottom .ds-field__additional {
+  font: var(--text-control-s);
+}
+
+/* Состояния */
+
+.ds-field__box:hover,
+.ds-field[data-ds-state='hover'] .ds-field__box {
+  box-shadow: inset 0 0 0 1px var(--color-fg-border-hover);
+}
+
+/* Active — поле в фокусе: кольцо толщиной 2, на 3 шире поля. */
+.ds-field__box:focus-within,
+.ds-field[data-ds-state='active'] .ds-field__box {
+  box-shadow: inset 0 0 0 1px var(--color-fg-border);
+  outline: 2px solid var(--color-fg-focus);
+  outline-offset: 1px;
+}
+
+.ds-field[data-invalid] .ds-field__box {
+  box-shadow: inset 0 0 0 1px var(--color-fg-danger);
+}
+
+.ds-field[data-disabled] .ds-field__box {
+  background: var(--color-bg-disabled);
+  box-shadow: none;
+  color: var(--color-fg-disabled);
+  cursor: default;
+}
+.ds-field[data-disabled] .ds-field__right,
+.ds-field[data-disabled] .ds-field__left > .ds-icon,
+.ds-field[data-disabled] .ds-field__label {
+  color: var(--color-fg-disabled);
+}
