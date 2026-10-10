@@ -5,8 +5,8 @@ import { Chip, type ChipColor, type ChipStartIcon } from '../Chip/Chip'
 
 export type CaseCardDevice = 'desktop' | 'mobile'
 
-/** Тег под картинкой. В ките — чипы `tag 1` … `tag 4`: `Default` + `tint`, цвет по смыслу тега. */
-export type CaseCardTag = { label: string; color?: Exclude<ChipColor, 'neutral' | 'orange'>; icon?: ChipStartIcon }
+/** Тег под картинкой. В ките — чипы `tag 1` … `tag 4`: `Default` + `tint`, цвет по смыслу тега; `neutral` — серая пометка. */
+export type CaseCardTag = { label: string; color?: Exclude<ChipColor, 'orange' | 'white'>; icon?: ChipStartIcon }
 
 export type CaseCardProps = Omit<ComponentPropsWithRef<'a'>, 'title' | 'children' | 'className' | 'style'> & {
   /** Раскладка: `desktop` на макете 1440, `mobile` на макете 360. В ките — ось `device`. */
@@ -70,9 +70,16 @@ export function CaseCard({
         {tags.length ? (
           <div className="ds-case-card__tags">
             {tags.slice(0, 4).map((tag) => (
-              <Chip key={tag.label} color={tag.color ?? 'blue'} size={chip} startIcon={tag.icon}>
-                {tag.label}
-              </Chip>
+              // Серый тег — пометка без смысла направления, например «Учебный проект»: в макетах главной он стоит среди тегов.
+              tag.color === 'neutral' ? (
+                <Chip key={tag.label} color="neutral" size={chip} startIcon={tag.icon}>
+                  {tag.label}
+                </Chip>
+              ) : (
+                <Chip key={tag.label} color={tag.color ?? 'blue'} size={chip} startIcon={tag.icon}>
+                  {tag.label}
+                </Chip>
+              )
             ))}
           </div>
         ) : null}
