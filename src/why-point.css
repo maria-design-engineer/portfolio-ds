@@ -73,6 +73,11 @@
   .ds-why-point[data-view='list']:hover .ds-why-point__stroke {
     stroke-dashoffset: 0;
   }
+  /* Галочка ждёт 300 мс: курсор, проведённый мимо, её не рисует. Уход курсора стирает без задержки.
+     Решение Марии 2026-10-10. */
+  .ds-why-point[data-view='list']:hover:not([data-selected]) .ds-why-point__stroke {
+    transition-delay: 300ms;
+  }
   .ds-why-point[data-view='list']:hover:not([data-selected]) {
     color: var(--ds-color-fg-brand);
   }
