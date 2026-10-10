@@ -12,6 +12,7 @@ export type ChipStartIcon =
   | 'circle-small'
   | 'design-ideas-regular'
   | 'form-multiple-collection-regular'
+  | 'hat-graduation-regular'
   | 'chevron-down'
   | 'dismiss'
   | 'edit'

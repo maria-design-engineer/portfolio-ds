@@ -19,6 +19,7 @@ import search12 from '@fluentui/svg-icons/icons/search_12_filled.svg?raw'
 import search16 from '@fluentui/svg-icons/icons/search_16_filled.svg?raw'
 import warning12 from '@fluentui/svg-icons/icons/warning_12_filled.svg?raw'
 import warning16 from '@fluentui/svg-icons/icons/warning_16_filled.svg?raw'
+import hatGraduation16Regular from '@fluentui/svg-icons/icons/hat_graduation_16_regular.svg?raw'
 
 // Тема Filled — поля и кнопка; тема Regular — чип: так стоит в наборах кита. Размер есть не у каждой иконки.
 // У `circle-small` и `form-multiple-collection-regular` размера 16 в наборе нет: взят 20 и ужат до 16, как в ките.
@@ -28,6 +29,7 @@ const icons = {
   'circle-small': { 16: circleSmall20 },
   'design-ideas-regular': { 16: designIdeas16Regular },
   'form-multiple-collection-regular': { 16: formMultipleCollection20Regular },
+  'hat-graduation-regular': { 16: hatGraduation16Regular },
   'chevron-down': { 12: chevronDown12, 16: chevronDown16 },
   dismiss: { 12: dismiss12, 16: dismiss16 },
   'dismiss-regular': { 12: dismiss12Regular },
