@@ -154,7 +154,7 @@
 @media (width < 1024px) {
   :root {
     --ds-font-size-display: 26px;
-    --ds-line-height-display: 28px;
+    --ds-line-height-display: 30px;
     --ds-font-size-h1: 18px;
     --ds-line-height-h1: 22px;
     --ds-font-size-h2: 18px;
@@ -177,7 +177,7 @@
  */
 [data-ds-mode='mobile'] {
   --ds-font-size-display: 26px;
-  --ds-line-height-display: 28px;
+  --ds-line-height-display: 30px;
   --ds-font-size-h1: 18px;
   --ds-line-height-h1: 22px;
   --ds-font-size-h2: 18px;
