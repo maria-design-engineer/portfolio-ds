@@ -81,7 +81,7 @@ check('CaseCard с render — класс карточки на месте', 'д�
 const { nbsp } = await import(new URL('./src/showcase/text.stories.helpers.ts', import.meta.url).href)
 check('nbsp: после каждого короткого слова', 'Скажу и⍽в⍽двух словах, а⍽не⍽в⍽трёх', nbsp('Скажу и в двух словах, а не в трёх').replaceAll(String.fromCharCode(160), '⍽'))
 const table = readFileSync(new URL('./src/icons/Icon.tsx', import.meta.url), 'utf8').match(/const icons = \{([\s\S]*?)\n\} satisfies/)[1]
-check('Иконок в таблице библиотеки', '12', String((table.match(/^  ['a-z-]+: \{/gm) || []).length))
+check('Иконок в таблице библиотеки', '13', String((table.match(/^  ['a-z-]+: \{/gm) || []).length))
 
 // --- Пакет
 const js = readFileSync(new URL('./dist/ds.js', import.meta.url), 'utf8')
