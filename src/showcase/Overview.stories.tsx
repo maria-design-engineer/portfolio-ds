@@ -21,7 +21,7 @@ function show(story: Renderable, args: object = {}) {
 // Порядок снизу вверх: атомы, молекулы, продуктовые. Число — вариантов набора в UI-kit.
 const sections: { name: string; group: string; count: number; content: () => ReactNode }[] = [
   { name: 'Spin', group: 'Components', count: 6, content: () => show(spin.Sizes, spin.default.args) },
-  { name: 'Chip', group: 'Components', count: 26, content: () => show(chip.States) },
+  { name: 'Chip', group: 'Components', count: 28, content: () => show(chip.States) },
   { name: 'Button', group: 'Base UI', count: 300, content: () => show(button.States, button.default.args) },
   { name: 'TextInput', group: 'Base UI', count: 28, content: () => show(textInput.States, textInput.default.args) },
   { name: 'TextArea', group: 'Base UI', count: 28, content: () => show(textArea.States, textArea.default.args) },

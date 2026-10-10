@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { Icon } from '../icons/Icon'
 
-export type ChipColor = 'neutral' | 'blue' | 'green' | 'teal' | 'orange'
+export type ChipColor = 'neutral' | 'white' | 'blue' | 'green' | 'teal' | 'orange'
 export type ChipVariant = 'tint' | 'stroke' | 'fill'
 export type ChipSize = 'm' | 's'
 /** Иконка слева — 16. */
@@ -34,11 +34,11 @@ type Common = {
 }
 
 // В ките оси `conditionals` и `style` ходят парой: Default + tint · active + stroke · active + fill.
-// В коде это одно свойство `variant`. У `neutral` есть только `tint`.
+// В коде это одно свойство `variant`. У `neutral` и `white` есть только `tint`.
 export type ChipProps = Common &
   (
-    | { /** Цвет. В ките — ось `color`. */ color?: 'neutral'; /** Вид. */ variant?: 'tint' }
-    | { color: Exclude<ChipColor, 'neutral'>; variant?: ChipVariant }
+    | { /** Цвет. В ките — ось `color`. */ color?: 'neutral' | 'white'; /** Вид. */ variant?: 'tint' }
+    | { color: Exclude<ChipColor, 'neutral' | 'white'>; variant?: ChipVariant }
   )
 
 // Метка: короткое слово в капсуле. Не нажимается.

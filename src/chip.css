@@ -1,5 +1,5 @@
 /*
- * Chip. Источник — набор кита 149:709: 26 вариантов.
+ * Chip. Источник — набор кита 149:709: 28 вариантов.
  * Цвета привязаны к Primitive напрямую, как в ките. Под прозрачным тинтом лежит белый: чип не просвечивает на картинке.
  */
 
@@ -50,6 +50,12 @@
 /* neutral — сплошной серый, без тинта поверх белого */
 .ds-chip[data-color='neutral'] {
   background: var(--ds-line-50);
+  color: var(--ds-color-fg-primary);
+}
+
+/* white — белый фон без тинта: чип на сером фоне. Релиз 2 дизайн-системы, 2026-10-10. */
+.ds-chip[data-color='white'] {
+  background: var(--ds-color-bg-default);
   color: var(--ds-color-fg-primary);
 }
 

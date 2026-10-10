@@ -14,7 +14,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 // Имена — как в UI-kit: оси color, conditionals, style, size.
-const colors: ChipColor[] = ['blue', 'green', 'teal', 'orange', 'neutral']
+const colors: ChipColor[] = ['blue', 'green', 'teal', 'orange', 'neutral', 'white']
 const sizes: ChipSize[] = ['m', 's']
 // В ките conditionals и style ходят парой.
 const pairs: Record<ChipVariant, string> = {
@@ -22,11 +22,20 @@ const pairs: Record<ChipVariant, string> = {
   stroke: 'conditionals=active, style=stroke',
   fill: 'conditionals=active, style=fill',
 }
-const variantsOf = (color: ChipColor): ChipVariant[] => (color === 'neutral' ? ['tint'] : ['tint', 'stroke', 'fill'])
+const variantsOf = (color: ChipColor): ChipVariant[] => (color === 'neutral' || color === 'white' ? ['tint'] : ['tint', 'stroke', 'fill'])
 
 // Проп variant зависит от color, поэтому сборка пропов вынесена сюда.
 const chip = (color: ChipColor, variant: ChipVariant, rest: Omit<ChipProps, 'color' | 'variant'>) =>
-  color === 'neutral' ? <Chip color="neutral" {...rest} /> : <Chip color={color} variant={variant} {...rest} />
+  color === 'white' ? (
+    // Белый чип стоит на сером фоне: на белой странице его не видно.
+    <span style={{ display: 'inline-flex', padding: 8, borderRadius: 'var(--ds-radius-block-12)', background: 'var(--ds-color-bg-subtle)' }}>
+      <Chip color="white" {...rest} />
+    </span>
+  ) : color === 'neutral' ? (
+    <Chip color="neutral" {...rest} />
+  ) : (
+    <Chip color={color} variant={variant} {...rest} />
+  )
 
 const caption: CSSProperties = { marginBottom: 8, color: 'var(--ds-color-fg-secondary)' }
 const row: CSSProperties = { display: 'flex', gap: 32, alignItems: 'flex-end', flexWrap: 'wrap' }
@@ -98,7 +107,7 @@ export const Sizes: Story = {
   ),
 }
 
-// Пять цветов в трёх видах; у neutral вид один.
+// Шесть цветов; у neutral и white вид один.
 export const Views: Story = {
   render: () => (
     <table className="ds-text-control-m" style={{ borderCollapse: 'collapse' }}>
@@ -164,7 +173,7 @@ export const Icons: Story = {
   ),
 }
 
-// Все 26 вариантов набора, с иконками, как стоят мастера в ките.
+// Все 28 вариантов набора, с иконками, как стоят мастера в ките.
 const all = colors.flatMap((color) => variantsOf(color).flatMap((variant) => sizes.map((size) => ({ color, variant, size }))))
 
 export const States: Story = {
