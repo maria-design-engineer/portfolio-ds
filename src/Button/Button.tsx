@@ -24,6 +24,15 @@ export type ButtonProps = Omit<ComponentProps<'button'>, 'className' | 'style' |
   selected?: boolean
   /** Идёт действие: текст и иконки невидимы и держат ширину, поверх спин. В ките — `State=Loading`. */
   loading?: boolean
+  /**
+   * Адрес: с ним кнопка — ссылка, тег `a`. Вид тот же. Для действия, которое уводит со страницы.
+   * У ссылки нет загрузки, выбранного и выключенного состояний: `loading`, `selected`, `disabled` не действуют.
+   */
+  href?: string
+  /** Куда открыть ссылку. Действует вместе с `href`. */
+  target?: string
+  /** Отношение ссылки. Действует вместе с `href`. */
+  rel?: string
   /** Текст кнопки. В ките — `Content`. */
   children?: ReactNode
   className?: string
@@ -49,6 +58,9 @@ export function Button({
   type = 'button',
   children,
   className,
+  href,
+  target,
+  rel,
   ...button
 }: ButtonProps) {
   const icon = ICON_SIZE[size]
@@ -56,6 +68,35 @@ export function Button({
   // Кнопка не рисует пустых частей: без текста она — «только иконка», какой бы из двух иконок её ни задали.
   const onlyIcon = iconOnly || (!hasText && Boolean(startIcon ?? endIcon))
   const single = startIcon ?? endIcon
+  // С адресом кнопка — ссылка: родной `a`, тот же вид. Подписи доступности страницы переходят на ссылку.
+  if (href !== undefined) {
+    return (
+      <a
+        href={href}
+        target={target}
+        rel={rel}
+        aria-label={button['aria-label']}
+        aria-describedby={button['aria-describedby']}
+        id={button.id}
+        className={['ds-button', `ds-text-${TEXT[size]}`, className].filter(Boolean).join(' ')}
+        data-view={view}
+        data-size={size}
+        data-icon-only={onlyIcon ? '' : undefined}
+      >
+        <span className="ds-button__content">
+          {onlyIcon ? (
+            single ? <Icon name={single} size={icon} /> : null
+          ) : (
+            <>
+              {startIcon ? <Icon name={startIcon} size={icon} /> : null}
+              {hasText ? <span className="ds-button__text">{children}</span> : null}
+              {endIcon ? <Icon name={endIcon} size={icon} /> : null}
+            </>
+          )}
+        </span>
+      </a>
+    )
+  }
   return (
     <BaseButton
       // Значения страницы для aria-pressed и aria-busy старше своих: пропы страницы идут следом.

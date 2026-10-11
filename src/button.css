@@ -16,6 +16,8 @@
   background: none;
   color: var(--ds-color-fg-primary);
   white-space: nowrap;
+  /* Кнопка с адресом — ссылка `a`: подчёркивания у неё нет. */
+  text-decoration: none;
   cursor: pointer;
   user-select: none;
   /* Нажатие: отклик 120 мс, ease-out — commons/motion.md. */

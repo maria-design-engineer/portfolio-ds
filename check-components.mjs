@@ -45,6 +45,9 @@ check('Button: иконка без текста — пустого текста 
 check('Button: иконка без текста — та же ширина, что iconOnly', 'да', has(tag(button({ startIcon: 'edit' }, null)), /data-icon-only=""/))
 check('Button: iconOnly с одним endIcon — иконка нарисована', 'да', has(button({ iconOnly: true, endIcon: 'chevron-down' }), /<svg/))
 check('Button: текст без иконок — «только иконка» не включается', 'нет', has(tag(button({})), /data-icon-only/))
+check('Button: с адресом — ссылка a с этим адресом', 'да', has(button({ href: 'https://example.com', view: 'flat-action' }), /^<a [^>]*href="https:\/\/example\.com"/))
+check('Button: с адресом — вид и размер те же атрибуты', 'да', has(button({ href: '/x', view: 'flat-action', size: 'm' }), /class="ds-button[^"]*"[^>]*data-view="flat-action"[^>]*data-size="m"/))
+check('Button: без адреса — по-прежнему button', 'да', has(button({}), /^<button /))
 
 // --- Spin
 const labelled = renderToString(h(Spin, { 'aria-label': 'Идёт отправка' }))
