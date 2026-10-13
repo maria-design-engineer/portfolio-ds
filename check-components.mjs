@@ -52,6 +52,9 @@ check('Button: текст без иконок — «только иконка» 
 check('Button: с адресом — ссылка a с этим адресом', 'да', has(button({ href: 'https://example.com', view: 'flat-action' }), /^<a [^>]*href="https:\/\/example\.com"/))
 check('Button: с адресом — вид и размер те же атрибуты', 'да', has(button({ href: '/x', view: 'flat-action', size: 'm' }), /class="ds-button[^"]*"[^>]*data-view="flat-action"[^>]*data-size="m"/))
 check('Button: без адреса — по-прежнему button', 'да', has(button({}), /^<button /))
+check('Button: с адресом — «текущая страница» дошла до ссылки', 'да', has(button({ href: '/x', 'aria-current': 'page' }), /^<a [^>]*aria-current="page"/))
+check('Button: с адресом без aria-current — атрибута нет', 'нет', has(button({ href: '/x' }), /aria-current/))
+check('Button: иконка arrow-left слева — нарисована, 16 в XL и 12 в M', '16 12', () => ['xl', 'm'].map((size) => (button({ startIcon: 'arrow-left', size }).match(/<span class="ds-icon" data-size="(\d+)"[^>]*><svg/) || [null, 'нет'])[1]).join(' '))
 
 // --- Checkbox
 // Разметка без браузера. Отметку мышью и пробелом проверяет браузер: здесь её условия — роль, обход клавиатурой, скрытое поле.
@@ -143,7 +146,7 @@ check('CaseCard с render — класс карточки на месте', 'д�
 const { nbsp } = await import(new URL('./src/showcase/text.stories.helpers.ts', import.meta.url).href)
 check('nbsp: после каждого короткого слова', 'Скажу и⍽в⍽двух словах, а⍽не⍽в⍽трёх', nbsp('Скажу и в двух словах, а не в трёх').replaceAll(String.fromCharCode(160), '⍽'))
 const table = readFileSync(new URL('./src/icons/Icon.tsx', import.meta.url), 'utf8').match(/const icons = \{([\s\S]*?)\n\} satisfies/)[1]
-check('Иконок в таблице библиотеки', '14', String((table.match(/^  ['a-z-]+: \{/gm) || []).length))
+check('Иконок в таблице библиотеки', '15', String((table.match(/^  ['a-z-]+: \{/gm) || []).length))
 
 // --- Пакет
 const js = readFileSync(new URL('./dist/ds.js', import.meta.url), 'utf8')

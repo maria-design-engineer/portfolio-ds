@@ -2,6 +2,8 @@
 // Лицензия набора — MIT, текст лежит в public/licenses/ и едет в пакет и в витрину.
 // Наружу компонент не выходит: иконки живут внутри полей и кнопки, имя набора в сайт не едет.
 import apps16Regular from '@fluentui/svg-icons/icons/apps_16_regular.svg?raw'
+import arrowLeft12 from '@fluentui/svg-icons/icons/arrow_left_12_filled.svg?raw'
+import arrowLeft16 from '@fluentui/svg-icons/icons/arrow_left_16_filled.svg?raw'
 import brightnessLow16Regular from '@fluentui/svg-icons/icons/brightness_low_16_regular.svg?raw'
 import checkmark12 from '@fluentui/svg-icons/icons/checkmark_12_filled.svg?raw'
 import checkmark16 from '@fluentui/svg-icons/icons/checkmark_16_filled.svg?raw'
@@ -32,6 +34,7 @@ const icons = {
   'design-ideas-regular': { 16: designIdeas16Regular },
   'form-multiple-collection-regular': { 16: formMultipleCollection20Regular },
   'hat-graduation-regular': { 16: hatGraduation16Regular },
+  'arrow-left': { 12: arrowLeft12, 16: arrowLeft16 },
   checkmark: { 12: checkmark12, 16: checkmark16 },
   'chevron-down': { 12: chevronDown12, 16: chevronDown16 },
   dismiss: { 12: dismiss12, 16: dismiss16 },

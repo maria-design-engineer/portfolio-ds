@@ -7,7 +7,7 @@ import { Spin, type SpinSize } from '../Spin/Spin'
 export type ButtonView = 'primary-brand' | 'outlined-action' | 'flat' | 'flat-action' | 'flat-secondary'
 export type ButtonSize = 'xs' | 's' | 'm' | 'l' | 'xl'
 // Иконки темы Filled в размерах 12 и 16 — те, что стоят в наборе кнопки.
-export type ButtonIcon = Extract<IconName, 'chevron-down' | 'dismiss' | 'edit' | 'eye' | 'search' | 'warning'>
+export type ButtonIcon = Extract<IconName, 'arrow-left' | 'chevron-down' | 'dismiss' | 'edit' | 'eye' | 'search' | 'warning'>
 
 export type ButtonProps = Omit<ComponentProps<'button'>, 'className' | 'style' | 'children'> & {
   /** Вид кнопки. В ките — ось `View`. */
@@ -77,6 +77,8 @@ export function Button({
         rel={rel}
         aria-label={button['aria-label']}
         aria-describedby={button['aria-describedby']}
+        // Ссылка на страницу, которая открыта сейчас: скринридер говорит «текущая страница».
+        aria-current={button['aria-current']}
         id={button.id}
         className={['ds-button', `ds-text-${TEXT[size]}`, className].filter(Boolean).join(' ')}
         data-view={view}
