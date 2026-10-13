@@ -60,9 +60,13 @@ export function Checkbox({
 
   return (
     <Field.Root
+      // Корень — строчный элемент: галочка стоит внутри абзаца и рядом с текстом.
+      render={<span />}
       className={['ds-checkbox', className].filter(Boolean).join(' ')}
       data-size={size}
       data-ds-state={dsState}
+      // Свой признак «отметку не сменить»: атрибут Base UI data-readonly стоит только у квадрата, подписи он не виден.
+      data-readonly={readOnly ? '' : undefined}
       name={name}
       invalid={error || undefined}
       disabled={disabled}

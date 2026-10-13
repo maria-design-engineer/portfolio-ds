@@ -10,6 +10,10 @@ const { TextInput, TextArea, Button, Spin, WhyPoint, CaseCard, Checkbox } = awai
 let passed = 0
 let failed = 0
 function check(name, expected, actual) {
+  // Факт можно дать функцией: исключение внутри неё — строка провала, запуск идёт дальше и печатает итог.
+  if (typeof actual === 'function') {
+    try { actual = actual() } catch (error) { actual = `исключение: ${error.message}` }
+  }
   const ok = expected === actual
   ok ? passed++ : failed++
   console.log(`${ok ? 'OK  ' : 'FAIL'} ${name}\n     ожидание: ${expected}\n     факт:     ${actual}`)
@@ -51,36 +55,58 @@ check('Button: без адреса — по-прежнему button', 'да', ha
 
 // --- Checkbox
 // Разметка без браузера. Отметку мышью и пробелом проверяет браузер: здесь её условия — роль, обход клавиатурой, скрытое поле.
+// Помощники не бросают исключений: нет тега — пустая строка, нет атрибута — «нет». Смена разметки даёт строку провала.
 const checkbox = (props, text = 'Content') => renderToString(h(Checkbox, props, text))
-const square = (html) => html.match(/<span[^>]*role="checkbox"[^>]*>/)[0]
-const hidden = (html) => html.match(/<input[^>]*type="checkbox"[^>]*>/)[0]
+const first = (html, re) => (html.match(re) || [''])[0]
+const root = (html) => first(html, /^<[a-z]+[^>]*>/)
+const square = (html) => first(html, /<span[^>]*role="checkbox"[^>]*>/)
+const hidden = (html) => first(html, /<input[^>]*type="checkbox"[^>]*>/)
+const label = (html) => first(html, /<label[^>]*>/)
 const attr = (tagHtml, name) => (tagHtml.match(new RegExp(` ${name}="([^"]*)"`)) || [null, 'нет'])[1]
-check('Checkbox: квадрат — роль checkbox, в обходе клавиатурой', 'tabindex="0"', `tabindex="${attr(square(checkbox({})), 'tabindex')}"`)
-check('Checkbox: не отмечена — aria-checked', 'false', attr(square(checkbox({})), 'aria-checked'))
-check('Checkbox: не отмечена — галочки нет', 'нет', has(checkbox({}), /<svg/))
-check('Checkbox: отмечена — aria-checked', 'true', attr(square(checkbox({ defaultChecked: true })), 'aria-checked'))
-check('Checkbox: отмечена — галочка нарисована', 'да', has(checkbox({ defaultChecked: true }), /ds-checkbox__check[^>]*><span class="ds-icon"[^>]*><svg/))
-check('Checkbox: отмечена — скрытое поле отмечено', 'да', has(hidden(checkbox({ defaultChecked: true })), / checked=""/))
-check('Checkbox: размер по умолчанию', 'xl', attr(checkbox({}).match(/^<div[^>]*>/)[0], 'data-size'))
-check('Checkbox: иконка галочки в XL — 16, в L и M — 12', '16 12 12', ['xl', 'l', 'm'].map((size) => attr(checkbox({ size, defaultChecked: true }).match(/<span class="ds-icon"[^>]*>/)[0], 'data-size')).join(' '))
-check('Checkbox: disabled — нажатие не принимает', 'true', attr(square(checkbox({ disabled: true })), 'aria-disabled'))
-check('Checkbox: disabled — из обхода клавиатурой выходит', '-1', attr(square(checkbox({ disabled: true })), 'tabindex'))
-check('Checkbox: disabled — скрытое поле выключено, с формой не уходит', 'да', has(hidden(checkbox({ disabled: true, defaultChecked: true })), / disabled=""/))
-check('Checkbox: disabled — корень помечен для стилей', 'да', has(checkbox({ disabled: true }).match(/^<div[^>]*>/)[0], /data-disabled/))
-check('Checkbox: error — квадрат помечен неверным', 'true', attr(square(checkbox({ error: true })), 'aria-invalid'))
-check('Checkbox: error — корень помечен для стилей', 'да', has(checkbox({ error: true }).match(/^<div[^>]*>/)[0], /data-invalid/))
-check('Checkbox: без error — не помечена', 'нет', attr(square(checkbox({})), 'aria-invalid'))
-check('Checkbox: error + disabled — неверной не объявляется', 'нет', attr(square(checkbox({ error: true, disabled: true })), 'aria-invalid'))
-check('Checkbox: readOnly — объявляется, в обходе остаётся', 'true 0', `${attr(square(checkbox({ readOnly: true })), 'aria-readonly')} ${attr(square(checkbox({ readOnly: true })), 'tabindex')}`)
-const withText = checkbox({})
-check('Checkbox: подпись — метка', 'да', has(withText, /<label[^>]*class="ds-checkbox__label ds-text-control-l"[^>]*>Content<\/label>/))
-check('Checkbox: метка связана со скрытым полем галочки', 'да', attr(withText.match(/<label[^>]*>/)[0], 'for') === attr(hidden(withText), 'id') ? 'да' : 'нет')
-check('Checkbox M: подпись стилем control/m', 'да', has(checkbox({ size: 'm' }), /class="ds-checkbox__label ds-text-control-m"/))
-check('Checkbox без подписи — метки нет', 'нет', has(checkbox({}, null), /<label/))
-check('Checkbox без подписи — имя страницы дошло до квадрата', 'Согласие', attr(square(checkbox({ 'aria-label': 'Согласие' }, null)), 'aria-label'))
-check('Checkbox: имя и значение дошли до скрытого поля', 'consent yes', `${attr(hidden(checkbox({ name: 'consent', value: 'yes' })), 'name')} ${attr(hidden(checkbox({ name: 'consent', value: 'yes' })), 'value')}`)
-check('Checkbox: ошибка формы по имени — помечена неверной', 'true', attr(square(renderToString(h(Form, { errors: { consent: 'x' } }, h(Checkbox, { name: 'consent' }, 'Content')))), 'aria-invalid'))
-check('Checkbox: ошибка другого поля — не помечена', 'нет', attr(square(renderToString(h(Form, { errors: { other: 'x' } }, h(Checkbox, { name: 'consent' }, 'Content')))), 'aria-invalid'))
+check('Checkbox: квадрат — роль checkbox, в обходе клавиатурой', 'tabindex="0"', () => `tabindex="${attr(square(checkbox({})), 'tabindex')}"`)
+check('Checkbox: не отмечена — aria-checked', 'false', () => attr(square(checkbox({})), 'aria-checked'))
+check('Checkbox: не отмечена — галочки нет', 'нет', () => has(checkbox({}), /<svg/))
+check('Checkbox: отмечена — aria-checked', 'true', () => attr(square(checkbox({ defaultChecked: true })), 'aria-checked'))
+check('Checkbox: отмечена — галочка нарисована', 'да', () => has(checkbox({ defaultChecked: true }), /ds-checkbox__check[^>]*><span class="ds-icon"[^>]*><svg/))
+check('Checkbox: отмечена — скрытое поле отмечено', 'да', () => has(hidden(checkbox({ defaultChecked: true })), / checked=""/))
+check('Checkbox: размер по умолчанию', 'xl', () => attr(root(checkbox({})), 'data-size'))
+check('Checkbox: иконка галочки в XL — 16, в L и M — 12', '16 12 12', () => ['xl', 'l', 'm'].map((size) => attr(first(checkbox({ size, defaultChecked: true }), /<span class="ds-icon"[^>]*>/), 'data-size')).join(' '))
+// Корень — строчный элемент: галочка стоит внутри абзаца и рядом с текстом, браузер абзац раньше времени не закрывает.
+check('Checkbox: корень — строчный элемент span', 'span', () => (root(checkbox({})).match(/^<([a-z]+)/) || [null, 'нет'])[1])
+check('Checkbox: корень несёт класс компонента', 'да', () => has(root(checkbox({})), /class="ds-checkbox"/))
+const blockTags = /<(div|p|ul|ol|li|section|article|form|fieldset|table|h[1-6])[\s>]/
+check('Checkbox с подписью: блочных элементов внутри нет', 'нет', () => has(checkbox({ defaultChecked: true }), blockTags))
+check('Checkbox без подписи: блочных элементов внутри нет', 'нет', () => has(checkbox({ defaultChecked: true, 'aria-label': 'x' }, null), blockTags))
+check('Checkbox в абзаце рядом с текстом: стоит внутри абзаца', 'да', () => has(renderToString(h('p', null, 'Текст ', h(Checkbox, { 'aria-label': 'x' }), ' текст')), /^<p>Текст <span[^>]*class="ds-checkbox"[^>]*>.*<\/span> текст<\/p>$/))
+check('Checkbox: disabled — нажатие не принимает', 'true', () => attr(square(checkbox({ disabled: true })), 'aria-disabled'))
+check('Checkbox: disabled — из обхода клавиатурой выходит', '-1', () => attr(square(checkbox({ disabled: true })), 'tabindex'))
+check('Checkbox: disabled — скрытое поле выключено, с формой не уходит', 'да', () => has(hidden(checkbox({ disabled: true, defaultChecked: true })), / disabled=""/))
+check('Checkbox: disabled — корень помечен для стилей', 'да', () => has(root(checkbox({ disabled: true })), /data-disabled/))
+check('Checkbox: error — квадрат помечен неверным', 'true', () => attr(square(checkbox({ error: true })), 'aria-invalid'))
+check('Checkbox: error — корень помечен для стилей', 'да', () => has(root(checkbox({ error: true })), /data-invalid/))
+check('Checkbox: без error — не помечена', 'нет', () => attr(square(checkbox({})), 'aria-invalid'))
+check('Checkbox: error + disabled — неверной не объявляется', 'нет', () => attr(square(checkbox({ error: true, disabled: true })), 'aria-invalid'))
+check('Checkbox: readOnly — объявляется, в обходе остаётся', 'true 0', () => `${attr(square(checkbox({ readOnly: true })), 'aria-readonly')} ${attr(square(checkbox({ readOnly: true })), 'tabindex')}`)
+check('Checkbox: readOnly — корень помечен для стилей', 'да', () => has(root(checkbox({ readOnly: true })), / data-readonly=""/))
+check('Checkbox: без readOnly — корень не помечен', 'нет', () => has(root(checkbox({})), /data-readonly/))
+check('Checkbox: подпись — метка', 'да', () => has(checkbox({}), /<label[^>]*class="ds-checkbox__label ds-text-control-l"[^>]*>Content<\/label>/))
+// Связь есть, только когда оба атрибута на месте и равны: «нет» у обоих — провал.
+const linked = (html) => {
+  const target = attr(label(html), 'for')
+  const id = attr(hidden(html), 'id')
+  return target !== 'нет' && id !== 'нет' && target === id ? 'да' : 'нет'
+}
+check('Checkbox: метка связана со скрытым полем галочки', 'да', () => linked(checkbox({})))
+check('Проверка связи: у метки нет for и у поля нет id — провал', 'нет', () => linked('<label>Content</label><input type="checkbox"/>'))
+check('Проверка связи: у метки нет for — провал', 'нет', () => linked('<label>Content</label><input type="checkbox" id="a"/>'))
+check('Проверка связи: for и id разные — провал', 'нет', () => linked('<label for="b">Content</label><input type="checkbox" id="a"/>'))
+check('Помощники проверок: сменившаяся разметка — строка провала, не исключение', 'нет нет', () => `${attr(square('<div></div>'), 'aria-checked')} ${attr(hidden('<div></div>'), 'id')}`)
+check('Checkbox M: подпись стилем control/m', 'да', () => has(checkbox({ size: 'm' }), /class="ds-checkbox__label ds-text-control-m"/))
+check('Checkbox без подписи — метки нет', 'нет', () => has(checkbox({}, null), /<label/))
+check('Checkbox без подписи — имя страницы дошло до квадрата', 'Согласие', () => attr(square(checkbox({ 'aria-label': 'Согласие' }, null)), 'aria-label'))
+check('Checkbox: имя и значение дошли до скрытого поля', 'consent yes', () => `${attr(hidden(checkbox({ name: 'consent', value: 'yes' })), 'name')} ${attr(hidden(checkbox({ name: 'consent', value: 'yes' })), 'value')}`)
+check('Checkbox: ошибка формы по имени — помечена неверной', 'true', () => attr(square(renderToString(h(Form, { errors: { consent: 'x' } }, h(Checkbox, { name: 'consent' }, 'Content')))), 'aria-invalid'))
+check('Checkbox: ошибка другого поля — не помечена', 'нет', () => attr(square(renderToString(h(Form, { errors: { other: 'x' } }, h(Checkbox, { name: 'consent' }, 'Content')))), 'aria-invalid'))
 
 // --- Spin
 const labelled = renderToString(h(Spin, { 'aria-label': 'Идёт отправка' }))
@@ -127,6 +153,11 @@ check('Пакет: пометка use client первой строкой', 'да
 check('Пакет: стили в слое ds', 'да', has(css, /@layer ds\{/))
 check('Пакет: пробного компонента Probe нет', 'нет', has(types + js, /Probe/))
 check('Пакет: стили Checkbox в собранном файле', 'да', has(css, /\.ds-checkbox__box\{/))
+// Старшинство состояний галочки: Disabled → Error → Hover. Наведение исключено у обоих видов квадрата — отмеченного и нет.
+const hoverRules = [...css.matchAll(/\.ds-checkbox:hover(:not\([^)]*\))? \.ds-checkbox__box\[data-(?:un)?checked\]/g)].map((m) => m[1] || '')
+check('Checkbox: правил наведения мышью — два, у отмеченного и неотмеченного квадрата', '2', String(hoverRules.length))
+check('Checkbox: наведения нет в Disabled, Error и у readOnly — в обоих правилах', '2', String(hoverRules.filter((not) => ['data-disabled', 'data-invalid', 'data-readonly'].every((name) => not.includes(name))).length))
+check('Checkbox: у readOnly указателя нет', 'да', has(css, /\.ds-checkbox\[data-readonly\] \.ds-checkbox__box,\.ds-checkbox\[data-readonly\] \.ds-checkbox__label\{cursor:default\}/))
 check('Пакет: нажатие клавишей не анимируется', 'да', has(css, /\.ds-button:active:not\(:focus-visible/))
 // «Уменьшить движение»: правило нажатия стоит только внутри no-preference — при reduce его нет, перебивать нечего.
 const pressRules = [...css.matchAll(/transform:scale\([^)]*\)/g)].map((m) => m.index)
