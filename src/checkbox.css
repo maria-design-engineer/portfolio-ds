@@ -1,0 +1,123 @@
+/*
+ * Checkbox. Источник — набор кита 1285:2463.
+ * Состояния приходят атрибутами Base UI: data-checked и data-unchecked у квадрата, data-disabled и data-invalid у корня.
+ * Атрибут data-ds-state — только для витрины: показать Hover и Focus карточкой, без мыши и клавиатуры.
+ */
+
+.ds-checkbox {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  color: var(--ds-color-fg-primary);
+}
+
+/* Квадрат: фон, обводка 1 px внутрь — тенью, как у полей. Галочка красится в цвет текста квадрата. */
+.ds-checkbox__box {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: var(--ds-color-bg-default);
+  box-shadow: inset 0 0 0 1px var(--ds-color-fg-border);
+  color: var(--ds-color-fg-inverse);
+  cursor: pointer;
+}
+
+.ds-checkbox__check {
+  display: flex;
+}
+
+.ds-checkbox__label {
+  min-width: 0;
+  cursor: pointer;
+}
+
+/* Размеры. Сторона квадрата, зазор до подписи и скругление у L и M в ките заданы числом. */
+
+.ds-checkbox[data-size='xl'] .ds-checkbox__box {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--ds-radius-control-xs);
+}
+.ds-checkbox[data-size='l'] .ds-checkbox__box {
+  width: 17px;
+  height: 17px;
+  border-radius: 6px;
+}
+.ds-checkbox[data-size='m'] .ds-checkbox__box {
+  width: 14px;
+  height: 14px;
+  border-radius: 5px;
+}
+
+/* Зазор — полем подписи: нажатие между квадратом и текстом тоже отмечает галочку. */
+.ds-checkbox[data-size='xl'] .ds-checkbox__label,
+.ds-checkbox[data-size='l'] .ds-checkbox__label {
+  padding-left: 7px;
+}
+.ds-checkbox[data-size='m'] .ds-checkbox__label {
+  padding-left: 5px;
+}
+
+/*
+ * Старшинство состояний: Disabled → Error → Hover → Default.
+ * Любое сочетание под курсором выглядит как старшее из состояний.
+ */
+
+/* Checked=On — заливка бренда, обводки нет */
+
+.ds-checkbox__box[data-checked] {
+  background: var(--ds-color-bg-brand);
+  box-shadow: none;
+}
+
+/* Hover — только мышью: курсор на квадрате или на подписи */
+
+@media (hover: hover) {
+  .ds-checkbox:hover:not([data-disabled], [data-invalid]) .ds-checkbox__box[data-unchecked] {
+    box-shadow: inset 0 0 0 1px var(--ds-color-fg-border-hover);
+  }
+  .ds-checkbox:hover:not([data-disabled]) .ds-checkbox__box[data-checked] {
+    background: var(--ds-color-bg-brand-hover);
+  }
+}
+.ds-checkbox[data-ds-state='hover'] .ds-checkbox__box[data-unchecked] {
+  box-shadow: inset 0 0 0 1px var(--ds-color-fg-border-hover);
+}
+.ds-checkbox[data-ds-state='hover'] .ds-checkbox__box[data-checked] {
+  background: var(--ds-color-bg-brand-hover);
+}
+
+/* Focus — кольцо только с клавиатуры, вокруг квадрата: толщина 2, на 3 шире квадрата */
+
+.ds-checkbox__box:focus-visible,
+.ds-checkbox[data-ds-state='focus'] .ds-checkbox__box {
+  outline: 2px solid var(--ds-color-fg-focus);
+  outline-offset: 1px;
+}
+
+/* Error — красные обводка квадрата и подпись; заливка отмеченного квадрата остаётся */
+
+.ds-checkbox[data-invalid] .ds-checkbox__box {
+  box-shadow: inset 0 0 0 1px var(--ds-color-fg-danger);
+}
+.ds-checkbox[data-invalid] .ds-checkbox__label {
+  color: var(--ds-color-fg-danger);
+}
+
+/* Disabled — старше всех: серый фон без обводки, отмеченный квадрат прозрачен наполовину */
+
+.ds-checkbox[data-disabled] .ds-checkbox__box {
+  background: var(--ds-color-bg-disabled);
+  box-shadow: none;
+  cursor: default;
+}
+.ds-checkbox[data-disabled] .ds-checkbox__box[data-checked] {
+  background: var(--ds-color-bg-brand);
+  opacity: 0.5;
+}
+.ds-checkbox[data-disabled] .ds-checkbox__label {
+  color: var(--ds-color-fg-disabled);
+  cursor: default;
+}

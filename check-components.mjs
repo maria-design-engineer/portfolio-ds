@@ -5,7 +5,7 @@ import { renderToString } from 'react-dom/server'
 import { readFileSync } from 'node:fs'
 import { Form } from '@base-ui/react/form'
 
-const { TextInput, TextArea, Button, Spin, WhyPoint, CaseCard } = await import(new URL('./dist/ds.js', import.meta.url).href)
+const { TextInput, TextArea, Button, Spin, WhyPoint, CaseCard, Checkbox } = await import(new URL('./dist/ds.js', import.meta.url).href)
 
 let passed = 0
 let failed = 0
@@ -49,6 +49,39 @@ check('Button: с адресом — ссылка a с этим адресом',
 check('Button: с адресом — вид и размер те же атрибуты', 'да', has(button({ href: '/x', view: 'flat-action', size: 'm' }), /class="ds-button[^"]*"[^>]*data-view="flat-action"[^>]*data-size="m"/))
 check('Button: без адреса — по-прежнему button', 'да', has(button({}), /^<button /))
 
+// --- Checkbox
+// Разметка без браузера. Отметку мышью и пробелом проверяет браузер: здесь её условия — роль, обход клавиатурой, скрытое поле.
+const checkbox = (props, text = 'Content') => renderToString(h(Checkbox, props, text))
+const square = (html) => html.match(/<span[^>]*role="checkbox"[^>]*>/)[0]
+const hidden = (html) => html.match(/<input[^>]*type="checkbox"[^>]*>/)[0]
+const attr = (tagHtml, name) => (tagHtml.match(new RegExp(` ${name}="([^"]*)"`)) || [null, 'нет'])[1]
+check('Checkbox: квадрат — роль checkbox, в обходе клавиатурой', 'tabindex="0"', `tabindex="${attr(square(checkbox({})), 'tabindex')}"`)
+check('Checkbox: не отмечена — aria-checked', 'false', attr(square(checkbox({})), 'aria-checked'))
+check('Checkbox: не отмечена — галочки нет', 'нет', has(checkbox({}), /<svg/))
+check('Checkbox: отмечена — aria-checked', 'true', attr(square(checkbox({ defaultChecked: true })), 'aria-checked'))
+check('Checkbox: отмечена — галочка нарисована', 'да', has(checkbox({ defaultChecked: true }), /ds-checkbox__check[^>]*><span class="ds-icon"[^>]*><svg/))
+check('Checkbox: отмечена — скрытое поле отмечено', 'да', has(hidden(checkbox({ defaultChecked: true })), / checked=""/))
+check('Checkbox: размер по умолчанию', 'xl', attr(checkbox({}).match(/^<div[^>]*>/)[0], 'data-size'))
+check('Checkbox: иконка галочки в XL — 16, в L и M — 12', '16 12 12', ['xl', 'l', 'm'].map((size) => attr(checkbox({ size, defaultChecked: true }).match(/<span class="ds-icon"[^>]*>/)[0], 'data-size')).join(' '))
+check('Checkbox: disabled — нажатие не принимает', 'true', attr(square(checkbox({ disabled: true })), 'aria-disabled'))
+check('Checkbox: disabled — из обхода клавиатурой выходит', '-1', attr(square(checkbox({ disabled: true })), 'tabindex'))
+check('Checkbox: disabled — скрытое поле выключено, с формой не уходит', 'да', has(hidden(checkbox({ disabled: true, defaultChecked: true })), / disabled=""/))
+check('Checkbox: disabled — корень помечен для стилей', 'да', has(checkbox({ disabled: true }).match(/^<div[^>]*>/)[0], /data-disabled/))
+check('Checkbox: error — квадрат помечен неверным', 'true', attr(square(checkbox({ error: true })), 'aria-invalid'))
+check('Checkbox: error — корень помечен для стилей', 'да', has(checkbox({ error: true }).match(/^<div[^>]*>/)[0], /data-invalid/))
+check('Checkbox: без error — не помечена', 'нет', attr(square(checkbox({})), 'aria-invalid'))
+check('Checkbox: error + disabled — неверной не объявляется', 'нет', attr(square(checkbox({ error: true, disabled: true })), 'aria-invalid'))
+check('Checkbox: readOnly — объявляется, в обходе остаётся', 'true 0', `${attr(square(checkbox({ readOnly: true })), 'aria-readonly')} ${attr(square(checkbox({ readOnly: true })), 'tabindex')}`)
+const withText = checkbox({})
+check('Checkbox: подпись — метка', 'да', has(withText, /<label[^>]*class="ds-checkbox__label ds-text-control-l"[^>]*>Content<\/label>/))
+check('Checkbox: метка связана со скрытым полем галочки', 'да', attr(withText.match(/<label[^>]*>/)[0], 'for') === attr(hidden(withText), 'id') ? 'да' : 'нет')
+check('Checkbox M: подпись стилем control/m', 'да', has(checkbox({ size: 'm' }), /class="ds-checkbox__label ds-text-control-m"/))
+check('Checkbox без подписи — метки нет', 'нет', has(checkbox({}, null), /<label/))
+check('Checkbox без подписи — имя страницы дошло до квадрата', 'Согласие', attr(square(checkbox({ 'aria-label': 'Согласие' }, null)), 'aria-label'))
+check('Checkbox: имя и значение дошли до скрытого поля', 'consent yes', `${attr(hidden(checkbox({ name: 'consent', value: 'yes' })), 'name')} ${attr(hidden(checkbox({ name: 'consent', value: 'yes' })), 'value')}`)
+check('Checkbox: ошибка формы по имени — помечена неверной', 'true', attr(square(renderToString(h(Form, { errors: { consent: 'x' } }, h(Checkbox, { name: 'consent' }, 'Content')))), 'aria-invalid'))
+check('Checkbox: ошибка другого поля — не помечена', 'нет', attr(square(renderToString(h(Form, { errors: { other: 'x' } }, h(Checkbox, { name: 'consent' }, 'Content')))), 'aria-invalid'))
+
 // --- Spin
 const labelled = renderToString(h(Spin, { 'aria-label': 'Идёт отправка' }))
 check('Spin с подписью: роль', 'role="status"', (labelled.match(/role="[a-z]+"/) || ['нет'])[0])
@@ -84,7 +117,7 @@ check('CaseCard с render — класс карточки на месте', 'д�
 const { nbsp } = await import(new URL('./src/showcase/text.stories.helpers.ts', import.meta.url).href)
 check('nbsp: после каждого короткого слова', 'Скажу и⍽в⍽двух словах, а⍽не⍽в⍽трёх', nbsp('Скажу и в двух словах, а не в трёх').replaceAll(String.fromCharCode(160), '⍽'))
 const table = readFileSync(new URL('./src/icons/Icon.tsx', import.meta.url), 'utf8').match(/const icons = \{([\s\S]*?)\n\} satisfies/)[1]
-check('Иконок в таблице библиотеки', '13', String((table.match(/^  ['a-z-]+: \{/gm) || []).length))
+check('Иконок в таблице библиотеки', '14', String((table.match(/^  ['a-z-]+: \{/gm) || []).length))
 
 // --- Пакет
 const js = readFileSync(new URL('./dist/ds.js', import.meta.url), 'utf8')
@@ -93,6 +126,7 @@ const types = readFileSync(new URL('./dist/index.d.ts', import.meta.url), 'utf8'
 check('Пакет: пометка use client первой строкой', 'да', js.startsWith('"use client"') ? 'да' : 'нет')
 check('Пакет: стили в слое ds', 'да', has(css, /@layer ds\{/))
 check('Пакет: пробного компонента Probe нет', 'нет', has(types + js, /Probe/))
+check('Пакет: стили Checkbox в собранном файле', 'да', has(css, /\.ds-checkbox__box\{/))
 check('Пакет: нажатие клавишей не анимируется', 'да', has(css, /\.ds-button:active:not\(:focus-visible/))
 // «Уменьшить движение»: правило нажатия стоит только внутри no-preference — при reduce его нет, перебивать нечего.
 const pressRules = [...css.matchAll(/transform:scale\([^)]*\)/g)].map((m) => m.index)

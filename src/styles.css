@@ -9,6 +9,7 @@
 @import './field.css' layer(ds);
 @import './spin.css' layer(ds);
 @import './button.css' layer(ds);
+@import './checkbox.css' layer(ds);
 @import './chip.css' layer(ds);
 @import './why-point.css' layer(ds);
 @import './case-card.css' layer(ds);

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 // Обзорная страница показывает те же раскладки вариантов, что страницы States компонентов: второго списка нет.
 import * as button from '../Button/Button.stories'
 import * as caseCard from '../CaseCard/CaseCard.stories'
+import * as checkbox from '../Checkbox/Checkbox.stories'
 import * as chip from '../Chip/Chip.stories'
 import * as spin from '../Spin/Spin.stories'
 import * as textArea from '../TextArea/TextArea.stories'
@@ -25,6 +26,7 @@ const sections: { name: string; group: string; count: number; content: () => Rea
   { name: 'Button', group: 'Base UI', count: 300, content: () => show(button.States, button.default.args) },
   { name: 'TextInput', group: 'Base UI', count: 28, content: () => show(textInput.States, textInput.default.args) },
   { name: 'TextArea', group: 'Base UI', count: 28, content: () => show(textArea.States, textArea.default.args) },
+  { name: 'Checkbox', group: 'Base UI', count: 30, content: () => show(checkbox.States, checkbox.default.args) },
   { name: 'WhyPoint', group: 'Product components', count: 5, content: () => show(whyPoint.States) },
   { name: 'CaseCard', group: 'Product components', count: 3, content: () => show(caseCard.States) },
 ]
