@@ -23,6 +23,7 @@ import edit16 from '@fluentui/svg-icons/icons/edit_16_filled.svg?raw'
 import eye12 from '@fluentui/svg-icons/icons/eye_12_filled.svg?raw'
 import eye16 from '@fluentui/svg-icons/icons/eye_16_filled.svg?raw'
 import formMultipleCollection20Regular from '@fluentui/svg-icons/icons/form_multiple_collection_20_regular.svg?raw'
+import fullScreenMaximize16 from '@fluentui/svg-icons/icons/full_screen_maximize_16_filled.svg?raw'
 import pause12 from '@fluentui/svg-icons/icons/pause_12_filled.svg?raw'
 import pause16 from '@fluentui/svg-icons/icons/pause_16_filled.svg?raw'
 import play12 from '@fluentui/svg-icons/icons/play_12_filled.svg?raw'
@@ -51,6 +52,8 @@ const icons = {
   'dismiss-regular': { 12: dismiss12Regular },
   edit: { 12: edit12, 16: edit16 },
   eye: { 12: eye12, 16: eye16 },
+  // Размера 12 в наборе нет: кнопка с этой иконкой бывает только L — стикер просмотра картинок кейса.
+  'full-screen-maximize': { 16: fullScreenMaximize16 },
   pause: { 12: pause12, 16: pause16 },
   play: { 12: play12, 16: play16 },
   search: { 12: search12, 16: search16 },
