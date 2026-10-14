@@ -47,9 +47,10 @@
   --ds-chip-solid: var(--ds-orange-fill);
   --ds-chip-text: var(--ds-orange-text);
 }
-/* neutral — сплошной серый, без тинта поверх белого */
+/* neutral — сплошной светло-серый, без тинта поверх белого. Релиз 4 дизайн-системы, 2026-10-14:
+   фон `neutral/tint-light` вместо `line/50`. */
 .ds-chip[data-color='neutral'] {
-  background: var(--ds-line-50);
+  background: var(--ds-neutral-tint-light);
   color: var(--ds-color-fg-primary);
 }
 

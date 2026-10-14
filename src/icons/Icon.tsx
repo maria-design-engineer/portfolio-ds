@@ -9,6 +9,10 @@ import checkmark12 from '@fluentui/svg-icons/icons/checkmark_12_filled.svg?raw'
 import checkmark16 from '@fluentui/svg-icons/icons/checkmark_16_filled.svg?raw'
 import chevronDown12 from '@fluentui/svg-icons/icons/chevron_down_12_filled.svg?raw'
 import chevronDown16 from '@fluentui/svg-icons/icons/chevron_down_16_filled.svg?raw'
+import chevronLeft12 from '@fluentui/svg-icons/icons/chevron_left_12_filled.svg?raw'
+import chevronLeft16 from '@fluentui/svg-icons/icons/chevron_left_16_filled.svg?raw'
+import chevronRight12 from '@fluentui/svg-icons/icons/chevron_right_12_filled.svg?raw'
+import chevronRight16 from '@fluentui/svg-icons/icons/chevron_right_16_filled.svg?raw'
 import circleSmall20 from '@fluentui/svg-icons/icons/circle_small_20_filled.svg?raw'
 import designIdeas16Regular from '@fluentui/svg-icons/icons/design_ideas_16_regular.svg?raw'
 import dismiss12 from '@fluentui/svg-icons/icons/dismiss_12_filled.svg?raw'
@@ -37,6 +41,8 @@ const icons = {
   'arrow-left': { 12: arrowLeft12, 16: arrowLeft16 },
   checkmark: { 12: checkmark12, 16: checkmark16 },
   'chevron-down': { 12: chevronDown12, 16: chevronDown16 },
+  'chevron-left': { 12: chevronLeft12, 16: chevronLeft16 },
+  'chevron-right': { 12: chevronRight12, 16: chevronRight16 },
   dismiss: { 12: dismiss12, 16: dismiss16 },
   'dismiss-regular': { 12: dismiss12Regular },
   edit: { 12: edit12, 16: edit16 },

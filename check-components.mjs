@@ -56,6 +56,12 @@ check('Button: с адресом — «текущая страница» дош�
 check('Button: с адресом без aria-current — атрибута нет', 'нет', has(button({ href: '/x' }), /aria-current/))
 check('Button: иконка arrow-left слева — нарисована, 16 в XL и 12 в M', '16 12', () => ['xl', 'm'].map((size) => (button({ startIcon: 'arrow-left', size }).match(/<span class="ds-icon" data-size="(\d+)"[^>]*><svg/) || [null, 'нет'])[1]).join(' '))
 
+for (const icon of ['chevron-left', 'chevron-right']) {
+  check(`Button: только иконка ${icon} — нарисована, 16 в L и 12 в M`, '16 12', () => ['l', 'm'].map((size) => (button({ startIcon: icon, iconOnly: true, size, 'aria-label': 'x' }).match(/<span class="ds-icon" data-size="(\d+)"[^>]*><svg/) || [null, 'нет'])[1]).join(' '))
+}
+// Релиз 4 дизайн-системы: фон Chip neutral — neutral/tint-light. Чип — CSS библиотеки, смотрим собранные стили.
+check('Chip neutral: фон — neutral/tint-light', 'да', () => has(readFileSync(new URL('./dist/ds.css', import.meta.url), 'utf8').replace(/\s+/g, ''), /\.ds-chip\[data-color=(?:'|")?neutral(?:'|")?\]\{background:var\(--ds-neutral-tint-light\)/))
+
 // --- Checkbox
 // Разметка без браузера. Отметку мышью и пробелом проверяет браузер: здесь её условия — роль, обход клавиатурой, скрытое поле.
 // Помощники не бросают исключений: нет тега — пустая строка, нет атрибута — «нет». Смена разметки даёт строку провала.
@@ -146,7 +152,7 @@ check('CaseCard с render — класс карточки на месте', 'д�
 const { nbsp } = await import(new URL('./src/showcase/text.stories.helpers.ts', import.meta.url).href)
 check('nbsp: после каждого короткого слова', 'Скажу и⍽в⍽двух словах, а⍽не⍽в⍽трёх', nbsp('Скажу и в двух словах, а не в трёх').replaceAll(String.fromCharCode(160), '⍽'))
 const table = readFileSync(new URL('./src/icons/Icon.tsx', import.meta.url), 'utf8').match(/const icons = \{([\s\S]*?)\n\} satisfies/)[1]
-check('Иконок в таблице библиотеки', '15', String((table.match(/^  ['a-z-]+: \{/gm) || []).length))
+check('Иконок в таблице библиотеки', '17', String((table.match(/^  ['a-z-]+: \{/gm) || []).length))
 
 // --- Пакет
 const js = readFileSync(new URL('./dist/ds.js', import.meta.url), 'utf8')
