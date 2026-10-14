@@ -7,7 +7,7 @@ import { Spin, type SpinSize } from '../Spin/Spin'
 export type ButtonView = 'primary-brand' | 'outlined-action' | 'flat' | 'flat-action' | 'flat-secondary'
 export type ButtonSize = 'xs' | 's' | 'm' | 'l' | 'xl'
 // Иконки темы Filled в размерах 12 и 16 — те, что стоят в наборе кнопки.
-export type ButtonIcon = Extract<IconName, 'arrow-left' | 'chevron-down' | 'chevron-left' | 'chevron-right' | 'dismiss' | 'edit' | 'eye' | 'search' | 'warning'>
+export type ButtonIcon = Extract<IconName, 'arrow-left' | 'chevron-down' | 'chevron-left' | 'chevron-right' | 'dismiss' | 'edit' | 'eye' | 'pause' | 'play' | 'search' | 'warning'>
 
 export type ButtonProps = Omit<ComponentProps<'button'>, 'className' | 'style' | 'children'> & {
   /** Вид кнопки. В ките — ось `View`. */

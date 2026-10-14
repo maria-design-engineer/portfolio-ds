@@ -23,6 +23,10 @@ import edit16 from '@fluentui/svg-icons/icons/edit_16_filled.svg?raw'
 import eye12 from '@fluentui/svg-icons/icons/eye_12_filled.svg?raw'
 import eye16 from '@fluentui/svg-icons/icons/eye_16_filled.svg?raw'
 import formMultipleCollection20Regular from '@fluentui/svg-icons/icons/form_multiple_collection_20_regular.svg?raw'
+import pause12 from '@fluentui/svg-icons/icons/pause_12_filled.svg?raw'
+import pause16 from '@fluentui/svg-icons/icons/pause_16_filled.svg?raw'
+import play12 from '@fluentui/svg-icons/icons/play_12_filled.svg?raw'
+import play16 from '@fluentui/svg-icons/icons/play_16_filled.svg?raw'
 import search12 from '@fluentui/svg-icons/icons/search_12_filled.svg?raw'
 import search16 from '@fluentui/svg-icons/icons/search_16_filled.svg?raw'
 import warning12 from '@fluentui/svg-icons/icons/warning_12_filled.svg?raw'
@@ -47,6 +51,8 @@ const icons = {
   'dismiss-regular': { 12: dismiss12Regular },
   edit: { 12: edit12, 16: edit16 },
   eye: { 12: eye12, 16: eye16 },
+  pause: { 12: pause12, 16: pause16 },
+  play: { 12: play12, 16: play16 },
   search: { 12: search12, 16: search16 },
   warning: { 12: warning12, 16: warning16 },
 } satisfies Record<string, Partial<Record<12 | 16, string>>>
