@@ -1,5 +1,5 @@
 /*
- * Токены. Источник — Variables кита в Figma, сняты 2026-10-09: 105 переменных в трёх коллекциях.
+ * Токены. Источник — Variables кита в Figma, сняты 2026-10-09: 105 переменных в трёх коллекциях; релиз 5 кита, 2026-10-15, — ещё две, `subhead`, итого 107.
  * Имя — приставка --ds- и имя Figma, косая черта заменена дефисом: color/fg/primary → --ds-color-fg-primary.
  * Приставка отделяет переменные библиотеки от имён темы Tailwind и чужого кода — решение Марии 2026-10-09.
  * Строки «@collection» читает страница токенов в витрине — по ним она делит список и считает.
@@ -146,6 +146,8 @@
   --ds-line-height-body-1: 28px;
   --ds-font-size-body-2: 17px;
   --ds-line-height-body-2: 24px;
+  --ds-font-size-subhead: 17px;
+  --ds-line-height-subhead: 24px;
   --ds-font-size-decor-mono: 15px;
   --ds-line-height-decor-mono: 20px;
 }
@@ -165,6 +167,8 @@
     --ds-line-height-body-1: 20px;
     --ds-font-size-body-2: 14px;
     --ds-line-height-body-2: 20px;
+    --ds-font-size-subhead: 14px;
+    --ds-line-height-subhead: 20px;
     --ds-font-size-decor-mono: 11px;
     --ds-line-height-decor-mono: 16px;
   }
@@ -188,6 +192,8 @@
   --ds-line-height-body-1: 20px;
   --ds-font-size-body-2: 14px;
   --ds-line-height-body-2: 20px;
+  --ds-font-size-subhead: 14px;
+  --ds-line-height-subhead: 20px;
   --ds-font-size-decor-mono: 11px;
   --ds-line-height-decor-mono: 16px;
 }
@@ -205,6 +211,8 @@
   --ds-line-height-body-1: 28px;
   --ds-font-size-body-2: 17px;
   --ds-line-height-body-2: 24px;
+  --ds-font-size-subhead: 17px;
+  --ds-line-height-subhead: 24px;
   --ds-font-size-decor-mono: 15px;
   --ds-line-height-decor-mono: 20px;
 }

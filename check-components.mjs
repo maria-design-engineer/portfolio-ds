@@ -186,5 +186,10 @@ check('Button: правил уменьшения при нажатии всег�
 check('Button: правил уменьшения вне «движение не уменьшено»', '0', String(outside.length))
 check('Button: при «уменьшить движение» правил с transform нет', 'нет', has(blocks('reduce').map(([from, to]) => css.slice(from, to)).join(''), /transform/))
 
+// `subhead` по режимам — релиз 5 кита, решение Марии 2026-10-15: Desktop 17 / 24, Mobile 14 / 20.
+const flat = css.replace(/\s+/g, '')
+check('subhead: стиль берёт размер из переменных', 'да', has(flat, /\.ds-text-subhead\{font:500var\(--ds-font-size-subhead\)\/var\(--ds-line-height-subhead\)/))
+check('subhead: значения по режимам — 17/24, 14/20, 14/20, 17/24', '17/24,14/20,14/20,17/24', [...flat.matchAll(/--ds-font-size-subhead:(\d+)px;--ds-line-height-subhead:(\d+)px/g)].map((m) => `${m[1]}/${m[2]}`).join(','))
+
 console.log(`\nИтог: пройдено ${passed}, провалено ${failed}`)
 process.exit(failed ? 1 : 0)
