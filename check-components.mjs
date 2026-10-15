@@ -147,6 +147,8 @@ check('CaseCard с render — корень — элемент страницы',
 check('CaseCard с render — target страницы дошёл до корня', 'да', has(site, /target="_blank"/))
 check('CaseCard с render — rel и aria-label дошли', 'да', has(site, /rel="noreferrer"/) === 'да' && has(site, /aria-label="Кейс"/) === 'да' ? 'да' : 'нет')
 check('CaseCard с render — класс карточки на месте', 'да', has(site, /class="[^"]*ds-case-card/))
+// Чип области на картинке — белый: `Product / case-card`, чип `domain` `color=white`, правка Марии 2026-10-15.
+check('CaseCard — чип domain белый', 'white', (renderToString(h(CaseCard, { title: 'T', teaser: 'D', domain: 'Геология' })).match(/data-color="([a-z]+)"[^>]*>(?:(?!data-color)[^])*?Геология/) ?? [])[1])
 
 // --- Витрина: неразрывные пробелы и подключённые иконки
 const { nbsp } = await import(new URL('./src/showcase/text.stories.helpers.ts', import.meta.url).href)

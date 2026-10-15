@@ -63,7 +63,8 @@ export function CaseCard({
           ) : (
             <span />
           )}
-          {domain ? <Chip size={chip}>{domain}</Chip> : null}
+          {/* Чип области — белый, `color=white` в ките: правка Марии 2026-10-15. */}
+          {domain ? <Chip color="white" size={chip}>{domain}</Chip> : null}
         </div>
       </div>
       <div className="ds-case-card__content">
