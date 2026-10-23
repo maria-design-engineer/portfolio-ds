@@ -155,7 +155,7 @@
 /* @mode Mobile — окно уже 1024. Порог: design-system-guide.md, «Адаптив главной». Граница одна, без зазора. */
 @media (width < 1024px) {
   :root {
-    --ds-font-size-display: 26px;
+    --ds-font-size-display: 24px;
     --ds-line-height-display: 30px;
     --ds-font-size-h1: 18px;
     --ds-line-height-h1: 22px;
@@ -180,7 +180,7 @@
  * Значения повторяют блоки выше: правка размера вносится в оба места.
  */
 [data-ds-mode='mobile'] {
-  --ds-font-size-display: 26px;
+  --ds-font-size-display: 24px;
   --ds-line-height-display: 30px;
   --ds-font-size-h1: 18px;
   --ds-line-height-h1: 22px;
