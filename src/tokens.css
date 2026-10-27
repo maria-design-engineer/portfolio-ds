@@ -86,12 +86,14 @@
   --ds-radius-block-16: 16px;
   --ds-radius-block-24: 24px;
   --ds-radius-block-32: 32px;
+  --ds-radius-block-40: 40px;
   --ds-radius-block-48: 48px;
   --ds-radius-block-64: 64px;
 
   /* Скругления блоков, Mobile */
   --ds-radius-mobile-5: 5px;
   --ds-radius-mobile-10: 10px;
+  --ds-radius-mobile-15: 15px;
   --ds-radius-mobile-20: 20px;
   --ds-radius-mobile-40: 40px;
 
