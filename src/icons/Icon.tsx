@@ -33,6 +33,10 @@ import search16 from '@fluentui/svg-icons/icons/search_16_filled.svg?raw'
 import warning12 from '@fluentui/svg-icons/icons/warning_12_filled.svg?raw'
 import warning16 from '@fluentui/svg-icons/icons/warning_16_filled.svg?raw'
 import hatGraduation16Regular from '@fluentui/svg-icons/icons/hat_graduation_16_regular.svg?raw'
+import code16Regular from '@fluentui/svg-icons/icons/code_16_regular.svg?raw'
+import dataHistogram16Regular from '@fluentui/svg-icons/icons/data_histogram_16_regular.svg?raw'
+import bot16Regular from '@fluentui/svg-icons/icons/bot_16_regular.svg?raw'
+import globe16Regular from '@fluentui/svg-icons/icons/globe_16_regular.svg?raw'
 
 // Тема Filled — поля, кнопка и галочка; тема Regular — чип: так стоит в наборах кита. Размер есть не у каждой иконки.
 // У `circle-small` и `form-multiple-collection-regular` размера 16 в наборе нет: взят 20 и ужат до 16, как в ките.
@@ -43,6 +47,12 @@ const icons = {
   'design-ideas-regular': { 16: designIdeas16Regular },
   'form-multiple-collection-regular': { 16: formMultipleCollection20Regular },
   'hat-graduation-regular': { 16: hatGraduation16Regular },
+  // Иконки тегов карточек кейсов — по смыслу тега: «Код», «Анализ домена», «AI-агент», «Веб-сайт». Блок кейсов,
+  // макет `738:7823`, правка Марии 2026-10-28.
+  'code-regular': { 16: code16Regular },
+  'data-histogram-regular': { 16: dataHistogram16Regular },
+  'bot-regular': { 16: bot16Regular },
+  'globe-regular': { 16: globe16Regular },
   'arrow-left': { 12: arrowLeft12, 16: arrowLeft16 },
   checkmark: { 12: checkmark12, 16: checkmark16 },
   'chevron-down': { 12: chevronDown12, 16: chevronDown16 },
